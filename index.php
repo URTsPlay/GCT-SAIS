@@ -32,8 +32,8 @@
                                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-12">
                                         <div class="md-form">
                                             <i class="fas fa-user white-text prefix"></i>
-                                            <input class="form-control form-control-lg rounded-0 text-white" type="text" name="schoolid" id="schoolid" required>
-                                            <label class="text-white" for="password">School ID</label>
+                                            <input class="form-control form-control-lg rounded-0 text-white" type="text" name="username" id="username" required>
+                                            <label class="text-white" for="password">Username</label>
                                         </div>
                                         <div class="md-form">
                                             <i class="fas fa-lock white-text prefix"></i>

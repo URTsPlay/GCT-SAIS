@@ -12,20 +12,10 @@
             <div class="row mt-3">
               <input type="text" name="edit_student_id" id="edit_student_id" hidden>
               <div class="col-md-12">
-                <small class="form-text text-black mb-2 mt-0">School ID</small>
-                <input type="text" name="edit_student_schoolid" id="edit_student_schoolid" class="form-control">
-              </div>
-              <div class="col-md-12">
-                <small class="form-text text-black mb-2 mt-0">Last Name</small>
-                <input type="text" name="edit_student_lastname" id="edit_student_lastname" class="form-control">
-              </div>
-              <div class="col-md-12">
-                <small class="form-text text-black mb-2 mt-0">Middle Name</small>
-                <input type="text" name="edit_student_middlename" id="edit_student_middlename" class="form-control">
-              </div>
-              <div class="col-md-12">
-                <small class="form-text text-black mb-2 mt-0">First Name</small>
-                <input type="text" name="edit_student_firstname" id="edit_student_firstname" class="form-control">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" name="edit_student_isscholar"  id="edit_student_isscholar">
+                  <label class="custom-control-label" for="edit_student_isscholar">Is Scholar?</label>
+                </div>
               </div>
             </div>
             <button type="submit" class="btn btn-primary btn-sm" name="save_student">Save</button>
