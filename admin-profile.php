@@ -4,7 +4,7 @@
 <?php
     $get_profile=retrieve("SELECT * FROM login_credentials LEFT JOIN admin ON login_credentials.user_id=admin.id WHERE username=?",array($_GET['admin']));
 ?>
-<div class="card card-intro grey lighten-3">
+<div class="card card-intro grey darken-5">
     <div class="card-body white-text text-center">
         <div class="row d-flex justify-content-center">
             <div class="col-md-6">

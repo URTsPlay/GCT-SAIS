@@ -19,7 +19,35 @@
                     </div>
                     <div class='p-2'>         
                         <div class='card-body'>
-                            <h4 class='card-title'><a class='black-text' href="admin-manage-students.php">Manage Users</a></h4>
+                            <h4 class='card-title'><a class='black-text' href="admin-manage-students.php">Manage Students</a></h4>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-4'>
+            <div class='card text-center'>
+                <div class='d-flex flex-row'>
+                    <div class='p-2'>
+                        <span class='fas fa-book' style='font-size: 7rem;'></span>
+                    </div>
+                    <div class='p-2'>         
+                        <div class='card-body'>
+                            <h4 class='card-title'><a class='black-text' href="admin-manage-subjects.php">Manage Subjects</a></h4>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-4'>
+            <div class='card text-center'>
+                <div class='d-flex flex-row'>
+                    <div class='p-2'>
+                        <span class='fas fa-graduation-cap' style='font-size: 7rem;'></span>
+                    </div>
+                    <div class='p-2'>         
+                        <div class='card-body'>
+                            <h4 class='card-title'><a class='black-text' href="admin-manage-courses.php">Manage Courses</a></h4>
                         </div>  
                     </div>
                 </div>

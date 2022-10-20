@@ -20,15 +20,23 @@ if (isset($_POST['submit'])) {
     } else {
         if ($_POST['captcha_code'] == $_POST['captcha_code_display']) {
 
-            manage("INSERT INTO students(schoolid,lastname,firstname,middlename,email,contact_number,course,year,created_at,updated_at)
-            VALUES(?,?,?,?,?,?,?,?,?,?)",array($_POST['schoolid'],$_POST['lastname'],$_POST['firstname'],$_POST['middlename'],
-            $_POST['email'],$_POST['contact_number'],$_POST['course'],$_POST['year'],date("Y-m-d h:i:s a"),date("Y-m-d h:i:s a")));
-            manage("INSERT INTO login_credentials(user_id,username,password,type,status,created_at,updated_at) 
-                    VALUES(?,?,?,?,?,?,?)",array($pdo->lastInsertId(),$_POST['schoolid'],'123456',2,1,date("Y-m-d H:i:s a"),date("Y-m-d H:i:s a")));
+            if ($_POST['password'] == $_POST['confirm_password']) {
+                
+                manage("INSERT INTO students(schoolid,lastname,firstname,middlename,email,contact_number,course,year,created_at,updated_at)
+                VALUES(?,?,?,?,?,?,?,?,?,?)",array($_POST['schoolid'],$_POST['lastname'],$_POST['firstname'],$_POST['middlename'],
+                $_POST['email'],$_POST['contact_number'],$_POST['course'],$_POST['year'],date("Y-m-d h:i:s a"),date("Y-m-d h:i:s a")));
+                
+                manage("INSERT INTO login_credentials(user_id,username,password,type,status,created_at,updated_at) 
+                        VALUES(?,?,?,?,?,?,?)",array($pdo->lastInsertId(),$_POST['schoolid'],$_POST['password'],2,1,date("Y-m-d H:i:s a"),date("Y-m-d H:i:s a")));
 
-            echo "<script type='module'>
-                    Swal.fire('Success','Registered Successfully','success');
+                echo "<script type='module'>
+                        Swal.fire('Success','Registered Successfully','success');
+                    </script>";
+            } else {
+                echo "<script type='module'>
+                    Swal.fire('Error','Password do not match','error');
                 </script>";
+            }
         } else {
             echo "<script type='module'>
                     Swal.fire('Error','Captcha Code does not match','error');
@@ -118,12 +126,28 @@ if (isset($_POST['submit'])) {
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="md-form">
                                     <input class="form-control" type="number" name="year" id="year" required>
                                     <label for="year">Year</label>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="md-form">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <input class="form-control" type="password" name="password" id="password" required>
+                                    <label for="year">Password</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="md-form">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <input class="form-control" type="password" name="confirm_password" id="confirm_password" required>
+                                    <label for="year">Confirm Password</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <input class="captcha_div ml-3" type="text" id="captcha_code_display" name="captcha_code_display" readonly>
                             </div>
