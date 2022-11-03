@@ -3,6 +3,7 @@
 <?php $page_title="GCT SAIS"; ?>
 <?php
     $get_profile=retrieve("SELECT * FROM students WHERE schoolid=?",array($_GET['user']));
+    $get_courses=retrieve("SELECT * FROM courses WHERE course_code=?",array($get_profile[0]['course']));
 
     if (isset($_POST['save_profile'])) {
         manage("UPDATE students 
@@ -44,7 +45,7 @@
                             <input type="email" id="edit_email" name="edit_email" class="form-control mb-3" placeholder="E-mail address" value="<?php echo $get_profile[0]['email']; ?>">
                             <input type="text" id="edit_contact_number" name="edit_contact_number" class="form-control mb-3" placeholder="Contact Number" value="<?php echo $get_profile[0]['contact_number']; ?>">
                             <select class="form-control mb-3" name="edit_course" id="edit_course">
-                                <option value="<?php echo ($get_profile[0]['course']!="" ? $get_profile[0]['course'] : '') ?>"><?php echo $get_profile[0]['course']; ?></option>
+                                <option value="<?php echo ($get_courses[0]['course_code']!="" ? $get_courses[0]['course_code'] : '') ?>"><?php echo $get_courses[0]['course_name']; ?></option>
                             </select>
                             <input type="number" id="edit_year" name="edit_year" class="form-control mb-3" value="<?php echo $get_profile[0]['year']; ?>">
                             <div class="text-center">

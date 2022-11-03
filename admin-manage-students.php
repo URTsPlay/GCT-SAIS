@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
                                                             data-toggle='modal' data-target='#view_student_modal'>
                                                             <i class='fas fa-eye hvr-pop'></i>
                                                         </span>
-                                                        <span class='m-1 edit_student d-none' 
+                                                        <span class='m-1 edit_student' 
                                                                 edit_student_id='".$disp_students[$i]['id']."' 
                                                                 edit_student_schoolid='".$disp_students[$i]['schoolid']."'
                                                                 edit_student_lastname='".$disp_students[$i]['lastname']."'
@@ -97,11 +97,20 @@ if (isset($_POST['submit'])) {
 <?php include('includes/footer.php'); ?>
 <script>
 $(document).ready(function(){
-    var url = "data/courses.json";
-    $.getJSON(url, function (data) {
-        $.each(data, function (index, value) {
-            $('#edit_course').append('<option value="' + value.course_code + '">' + value.course_name + '</option>');
-        });
+    var isscholar;
+    $("#edit_student_isscholar").click(function(){
+        if($(this).prop("checked") == true){
+            isscholar = 1;
+        }
+        else if($(this).prop("checked") == false){
+            isscholar = 0;
+        }
     });
+    // var url = "data/courses.json";
+    // $.getJSON(url, function (data) {
+    //     $.each(data, function (index, value) {
+    //         $('#edit_course').append('<option value="' + value.course_code + '">' + value.course_name + '</option>');
+    //     });
+    // });
 });
 </script>
