@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-        <div class='col-md-4'>
+        <div class='col-md-4 d-none'>
             <div class='card text-center'>
                 <div class='d-flex flex-row'>
                     <div class='p-2'>
@@ -53,7 +53,7 @@
                 </div>
             </div>
         </div>
-        <div class='col-md-4'>
+        <div class='col-md-4 mt-2'>
             <div class='card text-center'>
                 <div class='d-flex flex-row'>
                     <div class='p-2'>

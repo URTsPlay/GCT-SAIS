@@ -9,6 +9,20 @@ if (isset($_POST['add_subjects'])) {
         Swal.fire('Success','Added Successfully','success');
     </script>";
 }
+
+if (isset($_POST['save_subject'])) {
+    manage("UPDATE subjects 
+        SET sub_name=?, sub_units=?, sub_lec_hours=?,
+        sub_lab_hours=? WHERE id=?",
+    array($_POST['edit_subjects_sub_name'],
+            $_POST['edit_subjects_sub_units'],
+            $_POST['edit_subjects_sub_lec_hours'],
+            $_POST['edit_subjects_sub_lab_hours'],$_POST['edit_subjects_id']));
+    
+    echo "<script type='module'>
+            Swal.fire('Success','Updated Subjects Successfully','success');
+        </script>";
+}
 ?>
 <div class="row mx-auto mt-3">
 	<div class="col-md-12 mb-2">
@@ -92,22 +106,22 @@ if (isset($_POST['add_subjects'])) {
                                                     <td>".$disp_subjects[$i]['sub_lec_hours']."</td>
                                                     <td>".$disp_subjects[$i]['sub_lab_hours']."</td>
                                                     <td>
-                                                        <span class='m-1 view_student' 
-                                                            view_student_id='".$disp_subjects[$i]['id']."' 
-                                                            view_student_sub_name='".$disp_subjects[$i]['sub_name']."'
-                                                            view_student_sub_units='".$disp_subjects[$i]['sub_units']."'
-                                                            view_student_sub_lec_hours='".$disp_subjects[$i]['sub_lec_hours']."'
-                                                            view_student_sub_lab_hours='".$disp_subjects[$i]['sub_lab_hours']."'
-                                                            data-toggle='modal' data-target='#view_student_modal'>
+                                                        <span class='m-1 view_subjects' 
+                                                            view_subjects_id='".$disp_subjects[$i]['id']."' 
+                                                            view_subjects_sub_name='".$disp_subjects[$i]['sub_name']."'
+                                                            view_subjects_sub_units='".$disp_subjects[$i]['sub_units']."'
+                                                            view_subjects_sub_lec_hours='".$disp_subjects[$i]['sub_lec_hours']."'
+                                                            view_subjects_sub_lab_hours='".$disp_subjects[$i]['sub_lab_hours']."'
+                                                            data-toggle='modal' data-target='#view_subjects_modal'>
                                                             <i class='fas fa-eye hvr-pop'></i>
                                                         </span>
-                                                        <span class='m-1 edit_student' 
-                                                                edit_student_id='".$disp_subjects[$i]['id']."' 
-                                                                edit_student_sub_name='".$disp_subjects[$i]['sub_name']."'
-                                                                edit_student_sub_units='".$disp_subjects[$i]['sub_units']."'
-                                                                edit_student_sub_lec_hours='".$disp_subjects[$i]['sub_lec_hours']."'
-                                                                edit_student_sub_lab_hours='".$disp_subjects[$i]['sub_lab_hours']."'
-                                                                data-toggle='modal' data-target='#edit_student_modal'>
+                                                        <span class='m-1 edit_subjects' 
+                                                                edit_subjects_id='".$disp_subjects[$i]['id']."' 
+                                                                edit_subjects_sub_name='".$disp_subjects[$i]['sub_name']."'
+                                                                edit_subjects_sub_units='".$disp_subjects[$i]['sub_units']."'
+                                                                edit_subjects_sub_lec_hours='".$disp_subjects[$i]['sub_lec_hours']."'
+                                                                edit_subjects_sub_lab_hours='".$disp_subjects[$i]['sub_lab_hours']."'
+                                                                data-toggle='modal' data-target='#edit_subjects_modal'>
                                                             <i class='fas fa-pencil hvr-pop'></i>
                                                         </span>
                                                     </td>
@@ -138,5 +152,15 @@ $(document).ready(function(){
         "pageLength":5,
 		"order": [],
 	});
+
+    $(".edit_subjects").click(function(){
+		$("#edit_subjects_id").val($(this).attr("edit_subjects_id"));
+		$("#edit_subjects_sub_name").val($(this).attr("edit_subjects_sub_name"));
+		$("#edit_subjects_sub_units").val($(this).attr("edit_subjects_sub_units"));
+		$("#edit_subjects_sub_lec_hours").val($(this).attr("edit_subjects_sub_lec_hours"));
+		$("#edit_subjects_sub_lab_hours").val($(this).attr("edit_subjects_sub_lab_hours"));
+		$("#edit_subjects_modal").modal("show");
+	});
+    
 })
 </script>

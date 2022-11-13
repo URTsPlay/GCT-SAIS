@@ -1,6 +1,27 @@
 <?php  include("includes/header.php");  ?>
 <?php include('includes/navigation.php'); ?>
 <?php $page_title="GCT SAIS"; ?>
+<?php
+
+if (isset($_POST['add_courses'])) {
+    manage("INSERT INTO subjects(course_code,course_name)
+        VALUES(?,?)",array($_POST['course_code'],$_POST['course_name']));
+    echo "<script type='module'>
+        Swal.fire('Success','Added Courses','success');
+    </script>";
+}
+
+if (isset($_POST['save_course'])) {
+    manage("UPDATE courses 
+        SET course_code=?, course_name=?, WHERE id=?",
+    array($_POST['edit_courses_code'],
+            $_POST['edit_courses_name'],$_POST['edit_courses_id']));
+    
+    echo "<script type='module'>
+            Swal.fire('Success','Updated Courses Successfully','success');
+        </script>";
+}
+?>
 <div class="row mx-auto mt-3">
 	<div class="col-md-12 mb-2">
 		<div class="row">
@@ -31,7 +52,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm" name="add_monitor">Add</button>
+                                    <button type="submit" class="btn btn-primary btn-sm" name="add_courses">Add</button>
                                 </form>
                             </div>
                         </div>
@@ -60,25 +81,25 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                            $disp_students = retrieve("SELECT * FROM courses",array());
-                                            for ($i=0; $i < count($disp_students); $i++) { 
+                                            $disp_courses = retrieve("SELECT * FROM courses",array());
+                                            for ($i=0; $i < count($disp_courses); $i++) { 
                                             echo "<tr>
-                                                    <td>".$disp_students[$i]['id']."</td>
-                                                    <td>".$disp_students[$i]['course_code']."</td>
-                                                    <td>".$disp_students[$i]['course_name']."</td>
+                                                    <td>".$disp_courses[$i]['id']."</td>
+                                                    <td>".$disp_courses[$i]['course_code']."</td>
+                                                    <td>".$disp_courses[$i]['course_name']."</td>
                                                     <td>
-                                                        <span class='m-1 view_student' 
-                                                            view_student_id='".$disp_students[$i]['id']."' 
-                                                            view_student_schoolid='".$disp_students[$i]['course_code']."'
-                                                            view_student_lastname='".$disp_students[$i]['course_name']."'
-                                                            data-toggle='modal' data-target='#view_student_modal'>
+                                                        <span class='m-1 view_courses' 
+                                                            view_courses_id='".$disp_courses[$i]['id']."' 
+                                                            view_courses_schoolid='".$disp_courses[$i]['course_code']."'
+                                                            view_courses_lastname='".$disp_courses[$i]['course_name']."'
+                                                            data-toggle='modal' data-target='#view_courses_modal'>
                                                             <i class='fas fa-eye hvr-pop'></i>
                                                         </span>
-                                                        <span class='m-1 edit_student' 
-                                                                edit_student_id='".$disp_students[$i]['id']."' 
-                                                                edit_student_schoolid='".$disp_students[$i]['course_code']."'
-                                                                edit_student_lastname='".$disp_students[$i]['course_name']."'
-                                                                data-toggle='modal' data-target='#edit_student_modal'>
+                                                        <span class='m-1 edit_courses' 
+                                                                edit_courses_id='".$disp_courses[$i]['id']."' 
+                                                                edit_courses_code='".$disp_courses[$i]['course_code']."'
+                                                                edit_courses_name='".$disp_courses[$i]['course_name']."'
+                                                                data-toggle='modal' data-target='#edit_courses_modal'>
                                                             <i class='fas fa-pencil hvr-pop'></i>
                                                         </span>
                                                     </td>
@@ -108,6 +129,13 @@ $(document).ready(function(){
 		"searching": true,
         "pageLength":5,
 		"order": [],
+	});
+
+    $(".edit_courses").click(function(){
+		$("#edit_courses_id").val($(this).attr("edit_courses_id"));
+		$("#edit_courses_code").val($(this).attr("edit_courses_code"));
+		$("#edit_courses_name").val($(this).attr("edit_courses_name"));
+		$("#edit_courses_modal").modal("show");
 	});
 })
 </script>
