@@ -18,8 +18,28 @@
             </script>";
     }
 
+    if (isset($_POST['save_password'])) {
+        $get_curr_pass=retrieve("SELECT * FROM login_credentials WHERE username=?",array($_GET['user']));
+    
+        if ($get_curr_pass[0]['password'] == $_POST['current_password']) {
+            if ($_POST['new_password'] == $_POST['confirm_new_password']) {
+                $change_pass=manage("UPDATE login_credentials SET password=? WHERE username=?",array($_POST['new_password'],$_GET['user']));
+                echo "<script type='module'>
+                Swal.fire('Success','Password changes successfully','success');
+            </script>";
+            } else {
+                echo "<script type='module'>
+                Swal.fire('Error','Passwords do not match','error');
+            </script>";
+            }
+        } else {
+            echo "<script type='module'>
+                Swal.fire('Error','Current Password do not match','error');
+            </script>";
+        }
+    }
 ?>
-<div class="card card-intro grey lighten-3">
+<div class="card card-intro bg-primary">
     <div class="card-body white-text text-center">
         <div class="row d-flex justify-content-center">
             <div class="col-md-6">

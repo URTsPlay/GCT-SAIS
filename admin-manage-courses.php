@@ -13,7 +13,7 @@ if (isset($_POST['add_courses'])) {
 
 if (isset($_POST['save_course'])) {
     manage("UPDATE courses 
-        SET course_code=?, course_name=?,  WHERE id=?",
+        SET course_code=?, course_name=?, WHERE id=?",
     array($_POST['edit_courses_code'],
             $_POST['edit_courses_name'],$_POST['edit_courses_id']));
     

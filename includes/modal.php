@@ -65,6 +65,7 @@
   </div>
 </div>
 
+<!--Edit Courses-->
 <div class="modal fade" id="edit_courses_modal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -87,7 +88,75 @@
 
               </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-sm" name="save_subject">Save</button>
+            <button type="submit" class="btn btn-primary btn-sm" name="save_course">Save</button>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-elegant btn-sm" data-dismiss="modal" title="Close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Edit assessment-->
+<div class="modal fade" id="edit_assessment_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header primary-color text-white">
+        <h5 class="modal-title w-100 text-white">Edit Payments</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+            <div class="row mt-3">
+              <input type="text" name="edit_assessment_id" id="edit_assessment_id" hidden>
+              <div class="col-md-12">
+
+                <small class="grey-text mt-2">Registration/Gen. Fee</small>
+                <input class="form-control" type="text" name="edit_assessment_reg_gen_fee" id="edit_assessment_reg_gen_fee">
+
+                <small class="grey-text mt-2">Laboratory Fee</small>
+                <input class="form-control" type="text" name="edit_assessment_lab_fee" id="edit_assessment_lab_fee">
+
+                <small class="grey-text mt-2">Tuition Fee</small>
+                <input class="form-control" type="text" name="edit_assessment_tuition_fee" id="edit_assessment_tuition_fee">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" name="save_payment">Save</button>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-elegant btn-sm" data-dismiss="modal" title="Close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Proceed to Payment-->
+<div class="modal fade" id="payments_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header primary-color text-white">
+        <h5 class="modal-title w-100 text-white">Proceed Now</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+            <div class="row mt-3">
+              <input type="text" name="pay_assessment_id" id="pay_assessment_id" hidden>
+              <input type="text" name="payment_total" id="payment_total" hidden>
+              <h6 class="ml-auto mr-auto">OR Number: <span id="disp_or_number"></span></h6>
+              <div class="col-md-12">
+
+                <small class="grey-text mt-2">Amount</small>
+                <input class="form-control" type="text" name="payment_amount" id="payment_amount" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" name="save_payment">Save</button>
           </form>
       </div>
       <div class="modal-footer">

@@ -8,7 +8,6 @@
 </style>
 <?php $page_title="GCT SAIS"; ?>
 <?php
-date_default_timezone_set("Asia/Manila");
 if (isset($_POST['submit'])) {
     
     $check_schoolid=retrieve("SELECT COUNT(*) as count_schoolid FROM students WHERE schoolid=?",array($_POST['schoolid']));
