@@ -2,9 +2,29 @@
 <?php include('includes/navigation.php'); ?>
 <?php $page_title="GCT SAIS"; ?>
 <?php
-    $get_profile=retrieve("SELECT * FROM login_credentials LEFT JOIN admin ON login_credentials.user_id=admin.id WHERE username=?",array($_GET['admin']));
+$get_profile=retrieve("SELECT * FROM login_credentials LEFT JOIN admin ON login_credentials.user_id=admin.id WHERE username=?",array($_GET['admin']));
+if (isset($_POST['save_password'])) {
+    $get_curr_pass=retrieve("SELECT * FROM login_credentials WHERE username=?",array($_GET['user']));
+
+    if ($get_curr_pass[0]['password'] == $_POST['current_password']) {
+        if ($_POST['new_password'] == $_POST['confirm_new_password']) {
+            $change_pass=manage("UPDATE login_credentials SET password=? WHERE username=?",array($_POST['new_password'],$_GET['user']));
+            echo "<script type='module'>
+            Swal.fire('Success','Password changes successfully','success');
+        </script>";
+        } else {
+            echo "<script type='module'>
+            Swal.fire('Error','Passwords do not match','error');
+        </script>";
+        }
+    } else {
+        echo "<script type='module'>
+            Swal.fire('Error','Current Password do not match','error');
+        </script>";
+    }
+}
 ?>
-<div class="card card-intro grey darken-5">
+<div class="card card-intro bg-primary">
     <div class="card-body white-text text-center">
         <div class="row d-flex justify-content-center">
             <div class="col-md-6">
@@ -41,9 +61,9 @@
                     <div class="card-header">Password Change</div>
                     <div class="card-body">
                         <form method="POST">
-                            <input type="password" id="current_password" class="form-control mb-3" placeholder="Current password">
-                            <input type="password" id="new_password" class="form-control mb-3" placeholder="New password">
-                            <input type="password" id="confirm_new_password" class="form-control mb-3" placeholder="Confirm new password">
+                            <input type="password" id="current_password" name="current_password" class="form-control mb-3" placeholder="Current password">
+                            <input type="password" id="new_password" name="new_password" class="form-control mb-3" placeholder="New password">
+                            <input type="password" id="confirm_new_password" name="confirm_new_password" class="form-control mb-3" placeholder="Confirm new password">
                             <div class="text-center">
                                 <button type="submit" id="save_password" name="save_password" class="btn btn-info btn-md">Change Password</button>
                             </div>
