@@ -12,8 +12,18 @@
 			$_SESSION['user_id']=$get_login[0]['id'];
 			if ($get_login[0]['status'] == 1) {
 				if ($get_login[0]['type'] == 2) {
+				manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+				array($_POST['username'],"Student","Login","Login",
+					"<details>
+						<p>System Login</p>
+					</details>",date("Y-m-d h:i:s a")));
 					header("location: ../student-dashboard.php");
 				} else if ($get_login[0]['type'] == 1) {
+					manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+					array($_POST['username'],"Admin","Login","Login",
+					"<details>
+						<p>System Login</p>
+					</details>",date("Y-m-d h:i:s a")));
 					header("location: ../admin-dashboard.php");
 				}
 			} else {

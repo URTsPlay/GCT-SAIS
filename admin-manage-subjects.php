@@ -5,6 +5,15 @@
 if (isset($_POST['add_subjects'])) {
     manage("INSERT INTO subjects(sub_name,sub_units,sub_lec_hours,sub_lab_hours)
         VALUES(?,?,?,?)",array($_POST['sub_name'],$_POST['sub_units'],$_POST['sub_lec_hours'],$_POST['sub_lab_hours']));
+    manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+    array($admin_username,"Admin","Manage Subjects","Create Subject",
+        "<details>
+            <p>Subject Creation</p>
+            <p>Name: ".$_POST['sub_name']."</p>
+            <p>Units: ".$_POST['sub_units']."</p>
+            <p>Lecture Hours: ".$_POST['sub_lec_hours']."</p>
+            <p>Laboratory Hours: ".$_POST['sub_lab_hours']."</p>
+        </details>",date("Y-m-d h:i:s a")));
     echo "<script type='module'>
         Swal.fire('Success','Added Successfully','success');
     </script>";
@@ -19,6 +28,15 @@ if (isset($_POST['save_subject'])) {
             $_POST['edit_subjects_sub_lec_hours'],
             $_POST['edit_subjects_sub_lab_hours'],$_POST['edit_subjects_id']));
     
+    manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+    array($admin_username,"Admin","Manage Subjects","Edit Subject",
+        "<details>
+            <p>Subject Editing</p>
+            <p>Name: ".$_POST['edit_subjects_sub_name']."</p>
+            <p>Units: ".$_POST['edit_subjects_sub_units']."</p>
+            <p>Lecture Hours: ".$_POST['edit_subjects_sub_lec_hours']."</p>
+            <p>Laboratory Hours: ".$_POST['edit_subjects_sub_lab_hours']."</p>
+        </details>",date("Y-m-d h:i:s a")));
     echo "<script type='module'>
             Swal.fire('Success','Updated Subjects Successfully','success');
         </script>";
@@ -149,7 +167,7 @@ $(document).ready(function(){
 		"lengthChange": true,
 		"paging": true,
 		"searching": true,
-        "pageLength":5,
+        "pageLength":10,
 		"order": [],
 	});
 

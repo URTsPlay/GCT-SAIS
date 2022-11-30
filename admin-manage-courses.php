@@ -6,6 +6,16 @@
 if (isset($_POST['add_courses'])) {
     manage("INSERT INTO subjects(course_code,course_name)
         VALUES(?,?)",array($_POST['course_code'],$_POST['course_name']));
+    
+    manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+    array($admin_username,"Admin","Manage Courses","ADD",
+        "<details>
+            <p>Add Course</p>
+            <p>
+                Code: ".$_POST['course_code']."<br>
+                Name: ".$_POST['course_name']."
+            </p>
+        </details>",date("Y-m-d h:i:s a")));
     echo "<script type='module'>
         Swal.fire('Success','Added Courses','success');
     </script>";
@@ -16,6 +26,14 @@ if (isset($_POST['save_course'])) {
         SET course_code=?, course_name=?, WHERE id=?",
     array($_POST['edit_courses_code'],
             $_POST['edit_courses_name'],$_POST['edit_courses_id']));
+    
+    manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+    array($admin_username,"Admin","Manage Courses","UPDATE",
+        "<details>
+            <p>Update Course</p>
+            <p>Code: ".$_POST['edit_courses_code']."</p>
+            <p>Name: ".$_POST['edit_courses_name']."</p>
+        </details>",date("Y-m-d h:i:s a")));
     
     echo "<script type='module'>
             Swal.fire('Success','Updated Courses Successfully','success');
@@ -127,7 +145,7 @@ $(document).ready(function(){
 		"lengthChange": true,
 		"paging": true,
 		"searching": true,
-        "pageLength":5,
+        "pageLength":10,
 		"order": [],
 	});
 
