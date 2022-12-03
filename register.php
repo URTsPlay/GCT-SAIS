@@ -28,7 +28,18 @@ if (isset($_POST['submit'])) {
                 manage("INSERT INTO login_credentials(user_id,username,password,type,status,created_at,updated_at) 
                         VALUES(?,?,?,?,?,?,?)",array($pdo->lastInsertId(),$_POST['schoolid'],$_POST['password'],2,1,date("Y-m-d H:i:s a"),date("Y-m-d H:i:s a")));
 
-                echo "<script type='module'>
+                //Logs
+                manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+                array($_POST['schoolid'],"Student","Registration Page","Create Account",
+                    "<details>
+                        <p>Create SAIS Account</p>
+                        <p>
+                            School ID: ".$_POST['schoolid']."<br>
+                            Name: ".$_POST['firstname']." ".$_POST['middlename']." ".$_POST['lastname']."
+                        </p>
+                    </details>",date("Y-m-d h:i:s a")));    
+
+            echo "<script type='module'>
                         Swal.fire('Success','Registered Successfully','success');
                     </script>";
             } else {
@@ -164,6 +175,10 @@ if (isset($_POST['submit'])) {
             </div>
         </div>
     </div>
+</div>
+<div class="text-center bg-primary p-4 mt-2 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
+    Copyright &copy; 2022
+    <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a>
 </div>
 <?php include('includes/footer.php'); ?>
 <script>

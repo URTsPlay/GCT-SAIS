@@ -3,17 +3,23 @@
 <?php $page_title="GCT SAIS"; ?>
 <?php
 date_default_timezone_set("Asia/Manila");
-if (isset($_POST['submit'])) {
 
-    manage("INSERT INTO students(schoolid,lastname,firstname,middlename,course,year) 
-            VALUES(?,?,?,?,?,?)",
-        array($_POST['schoolid'],$_POST['lastname'],$_POST['firstname'],
-        $_POST['middlename'],$_POST['course'],$_POST['year']));
-
+if (isset($_POST['save_student'])) {
+    manage("UPDATE students SET isscholar=?, scholarship_type=? WHERE id=?",
+    array($_POST['edit_student_isscholar'], $_POST['edit_student_sholarship_type'], $_POST['edit_student_id']));
+    
+    manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+    array($admin_username,"Admin","Manage Students","UPDATE",
+        "<details>
+            <p>Update Student</p>
+            <p>
+                Is Scholar: ".$_POST['edit_student_isscholar']."<br>
+                Scholarship Type: ".$_POST['edit_student_sholarship_type'].
+            "</p>
+        </details>",date("Y-m-d h:i:s a")));
     echo "<script type='module'>
-			Swal.fire('Success','Added Students Successfully','success');
+			Swal.fire('Success','Updated Students Successfully','success');
 		</script>";
-
 }
 
 ?>
@@ -32,7 +38,7 @@ if (isset($_POST['submit'])) {
                                     <thead>
                                         <tr>
                                             <?php
-                                                $stud_head=explode(",","No,School ID,Last Name,First Name,Middle Name,Email,Contact Number,Course,Year,Action");
+                                                $stud_head=explode(",","No,School ID,Last Name,First Name,Middle Name,Email,Contact Number,Course,Year,Is Scholar, Scholarship Type,Action");
                                                 foreach($stud_head as $stud_val)
                                                 {
                                                     echo "<th>".$stud_val."</th>";
@@ -44,6 +50,7 @@ if (isset($_POST['submit'])) {
                                         <?php
                                             $disp_students = retrieve("SELECT * FROM students",array());
                                             for ($i=0; $i < count($disp_students); $i++) { 
+                                                $disp_scholarship_type = retrieve("SELECT * FROM scholarship WHERE id=?",array($disp_students[$i]['scholarship_type']));
                                             echo "<tr>
                                                     <td>".$disp_students[$i]['id']."</td>
                                                     <td>".$disp_students[$i]['schoolid']."</td>
@@ -54,28 +61,12 @@ if (isset($_POST['submit'])) {
                                                     <td>".$disp_students[$i]['contact_number']."</td>
                                                     <td>".$disp_students[$i]['course']."</td>
                                                     <td>".$disp_students[$i]['year']."</td>
+                                                    <td>".($disp_students[$i]['isscholar']==1 ? 'Yes' : 'No')."</td>
+                                                    <td>".$disp_scholarship_type[0]['scholarship_name']."</td>
                                                     <td>
-                                                        <span class='m-1 view_student' 
-                                                            view_student_id='".$disp_students[$i]['id']."' 
-                                                            view_student_schoolid='".$disp_students[$i]['schoolid']."'
-                                                            view_student_lastname='".$disp_students[$i]['lastname']."'
-                                                            view_student_firstname='".$disp_students[$i]['firstname']."'
-                                                            view_student_middlename='".$disp_students[$i]['middlename']."'
-                                                            view_student_email='".$disp_students[$i]['email']."'
-                                                            view_student_contact_number='".$disp_students[$i]['contact_number']."'
-                                                            view_course='".$disp_students[$i]['course']."'
-                                                            view_year='".$disp_students[$i]['year']."'
-                                                            data-toggle='modal' data-target='#view_student_modal'>
-                                                            <i class='fas fa-eye hvr-pop'></i>
-                                                        </span>
-                                                        <span class='m-1 edit_student' 
-                                                                edit_student_id='".$disp_students[$i]['id']."' 
-                                                                edit_student_schoolid='".$disp_students[$i]['schoolid']."'
-                                                                edit_student_lastname='".$disp_students[$i]['lastname']."'
-                                                                edit_student_firstname='".$disp_students[$i]['firstname']."'
-                                                                edit_student_middlename='".$disp_students[$i]['middlename']."'
-                                                                edit_course='".$disp_students[$i]['course']."'
-                                                                edit_year='".$disp_students[$i]['year']."'
+                                                        <span class='m-1 edit_student'
+                                                                edit_student_id=".$disp_students[$i]['id']."
+                                                                edit_student_isscholar='".$disp_students[$i]['isscholar']."'
                                                                 data-toggle='modal' data-target='#edit_student_modal'>
                                                             <i class='fas fa-pencil hvr-pop'></i>
                                                         </span>
@@ -97,15 +88,21 @@ if (isset($_POST['submit'])) {
 <?php include('includes/footer.php'); ?>
 <script>
 $(document).ready(function(){
+
     var isscholar;
-    $("#edit_student_isscholar").click(function(){
-        if($(this).prop("checked") == true){
-            isscholar = 1;
-        }
-        else if($(this).prop("checked") == false){
-            isscholar = 0;
+    $(".edit_student").click(function(){
+        $("#edit_student_id").val($(this).attr("edit_student_id"));
+        $("#edit_student_isscholar").val($(this).attr("edit_student_isscholar"));
+    });
+
+    $("#edit_student_isscholar").change(function(){
+        if ($("#edit_student_isscholar").val() == 1) {
+            $(".d-none").removeClass();
+        } else {
+            $(".d-none").addClass();
         }
     });
+
     // var url = "data/courses.json";
     // $.getJSON(url, function (data) {
     //     $.each(data, function (index, value) {

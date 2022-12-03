@@ -10,7 +10,13 @@ $get_login_admin=retrieve("SELECT * FROM login_credentials
 		WHERE login_credentials.id=?",array($_SESSION['user_id']));
 
 //student variables
+$student_id=$get_login_student[0]['id'];
 $student_schoolid = $get_login_student[0]['schoolid'];
+
+$student_lastname=$get_login_student[0]['lastname'];
+$student_firstname=$get_login_student[0]['firstname'];
+$student_middlename=$get_login_student[0]['middlename'];
+
 $student_name=$get_login_student[0]['firstname']." ".$get_login_student[0]['lastname'];
 $student_fullname = $get_login_student[0]['firstname']." ".$get_login_student[0]['middlename']." ".$get_login_student[0]['lastname'];
 $student_email=$get_login_student[0]['email'];
@@ -18,6 +24,7 @@ $student_contact_number=$get_login_student[0]['contact_number'];
 $course=$get_login_student[0]['course'];
 $year=$get_login_student[0]['year'];
 $student_type=$get_login_student[0]['type'];
+$student_status=$get_login_student[0]['status'];
 $student_username=$get_login_student[0]['username'];
 $student_password=$get_login_student[0]['password'];
 

@@ -5732,6 +5732,9 @@ readers do not read off random characters that represent icons */
 .fa-user-friends:before {
   content: "\f500"; }
 
+.fa-user-gear:before {
+  content: "\f4fe"; }
+  
 .fa-user-graduate:before {
   content: "\f501"; }
 
