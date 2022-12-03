@@ -49,7 +49,7 @@
             <div class='card text-center'>
                 <div class='d-flex flex-row'>
                     <div class='p-2'>
-                        <span class='fas fa-graduation-cap' style='font-size: 7rem;'></span>
+                        <span class='fas fa-school' style='font-size: 7rem;'></span>
                     </div>
                     <div class='p-2'>         
                         <div class='card-body'>

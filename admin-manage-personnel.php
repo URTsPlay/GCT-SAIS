@@ -84,7 +84,7 @@ if (isset($_POST['add_admin'])) {
                                     <thead>
                                         <tr>
                                             <?php
-                                                $stud_head=explode(",","No,Last Name,First Name,Middle Name,Position,Email,Contact Number,Action");
+                                                $stud_head=explode(",","No,Last Name,First Name,Middle Name,Position,Email,Contact Number");
                                                 foreach($stud_head as $stud_val)
                                                 {
                                                     echo "<th>".$stud_val."</th>";
@@ -104,22 +104,6 @@ if (isset($_POST['add_admin'])) {
                                                     <td>".$disp_admin[$i]['position']."</td>
                                                     <td>".$disp_admin[$i]['email']."</td>
                                                     <td>".$disp_admin[$i]['contact_number']."</td>
-                                                    <td>
-                                                        <span class='m-1 view_admin' 
-                                                            view_admin_id='".$disp_admin[$i]['id']."' 
-                                                            view_admin_schoolid='".$disp_admin[$i]['course_code']."'
-                                                            view_admin_lastname='".$disp_admin[$i]['course_name']."'
-                                                            data-toggle='modal' data-target='#view_admin_modal'>
-                                                            <i class='fas fa-eye hvr-pop'></i>
-                                                        </span>
-                                                        <span class='m-1 edit_admin' 
-                                                                edit_admin_id='".$disp_admin[$i]['id']."' 
-                                                                edit_admin_code='".$disp_admin[$i]['course_code']."'
-                                                                edit_admin_name='".$disp_admin[$i]['course_name']."'
-                                                                data-toggle='modal' data-target='#edit_admin_modal'>
-                                                            <i class='fas fa-pencil hvr-pop'></i>
-                                                        </span>
-                                                    </td>
                                                 </tr>";
                                             }
                                         ?>
@@ -132,6 +116,10 @@ if (isset($_POST['add_admin'])) {
 			</div>
 		</div>
 	</div>
+</div>
+<div class="text-center bg-primary p-4 mt-2 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
+    Copyright &copy; 2022
+    <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a>
 </div>
 <?php include('includes/modal.php') ?>
 <?php include('includes/footer.php'); ?>

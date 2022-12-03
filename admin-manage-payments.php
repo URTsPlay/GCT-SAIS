@@ -1,13 +1,15 @@
 <?php  include("includes/header.php");  ?>
 <?php include('includes/navigation.php'); ?>
-<?php $page_title="GCT SAIS"; ?>
+<?php $page_title="GCT SAIS - Student Ledger and Assessment"; ?>
 <?php
 if (isset($_POST['add_assessment'])) {
     $get_school_id = retrieve("SELECT * FROM students WHERE id=?",array($_POST['getStudents']));
-    manage("INSERT INTO assessment(student_id,school_id,or_number,reg_gen_fee,nstp_fee,lab_fee,tuition_fee,total,date_assessed,created_at,updated_at)
-        VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+    manage("INSERT INTO assessment(student_id,school_id,or_number,reg_gen_fee,nstp_fee,lab_fee,tuition_fee,school_year,
+        particular,subtotal,total,date_assessed,created_at,updated_at)
+        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         array($_POST['getStudents'],$get_school_id[0]['schoolid'], $_POST['or_number'],$_POST['reg_gen_fee'],
-        $_POST['nstp_fee'],$_POST['lab_fee'],$_POST['tuition_fee'],$_POST['total_fee'],date("Y-m-d"),date("Y-m-d h:i:s a"),date("Y-m-d h:i:s a")));
+        $_POST['nstp_fee'],$_POST['lab_fee'],$_POST['tuition_fee'],$_POST['school_year'],$_POST['particular'],
+        $_POST['sub_total'],$_POST['total_fee'],date("Y-m-d"),date("Y-m-d h:i:s a"),date("Y-m-d h:i:s a")));
     
 
     //https://stackoverflow.com/questions/1762231/using-implode-to-combine-multiple-select
@@ -36,12 +38,12 @@ if (isset($_POST['save_assessment'])) {
 
 if (isset($_POST['save_payment'])) {
     $get_amount = retrieve("SELECT * FROM assessment WHERE id=?",array($_POST['pay_assessment_id']));
-    $payment_total=$get_amount[0]['total'];
+    $payment_total=$get_amount[0]['subtotal'];
     $payment_amount=$_POST['payment_amount'];
-    $total_left = $payment_total - $payment_amount;
-    manage("INSERT INTO payments(assessment_id,total,amount,total_left,date_paid,created_at)
+    $balance = $payment_total - $payment_amount;
+    manage("INSERT INTO payments(assessment_id,total,amount,balance,date_paid,created_at)
     VALUES(?,?,?,?,?,?)",array($_POST['pay_assessment_id'],$payment_total,
-    $payment_amount,$total_left,date("Y-m-d"),date("Y-m-d h:i:s a")));
+    $payment_amount,$balance,date("Y-m-d"),date("Y-m-d h:i:s a")));
 
     echo "<script type='module'>
         Swal.fire('Success','Payment Paid','success');
@@ -65,19 +67,20 @@ if (isset($_POST['save_payment'])) {
 </style>
 <?php $page_title="GCT SAIS"; ?>
 <div class="row mx-auto mt-3">
-    <h1 class="mr-auto ml-auto">Payment Management</h1>
+    <h1 class="mr-auto ml-auto">Student Ledger and Assessment</h1>
 	<div class="col-md-12 mt-2">
 		<div class="row">
-			<div class="col-md-4 mb-2">
+			<div class="col-md-5 mb-2">
 				<div class="card">
 					<div class="card-header p-2 bg-primary text-white">
-						Add Payment
+						Add Assessment
 					</div>
 					<div class="card-body">
 						<div class="row">
                             <div class="col-md-12">
                                 <form method="POST">
                                     <div class="row">
+                                        <small class="ml-3">Note: Enter 0 if the field doesn't exist</small>
                                         <div class="col-md-12">
                                             <div class="md-form">
                                                 <i class="fas fa-hashtag prefix"></i>
@@ -85,7 +88,7 @@ if (isset($_POST['save_payment'])) {
                                                 <label for="or_number">OR Number</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="md-form">
                                                 <select class="mdb-select md-form" name="getStudents" id="getStudents" searchable="Search here..">
                                                     <option value="">Select Student</option>
@@ -98,7 +101,7 @@ if (isset($_POST['save_payment'])) {
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="md-form">
                                                 <select class="mdb-select md-form" name="getSubjects[]" id="getSubjects" multiple>
                                                     <option value="">Select Subjects</option>
@@ -111,6 +114,8 @@ if (isset($_POST['save_payment'])) {
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-12">
                                             <div class="md-form">
                                                 <i class="fas fa-money-bill prefix"></i>
@@ -120,7 +125,7 @@ if (isset($_POST['save_payment'])) {
                                         </div>
                                         <div class="col-md-12">
                                             <div class="md-form">
-                                                <i class="fas fa-money-bill prefix"></i
+                                                <i class="fas fa-money-bill prefix"></i>
                                                 <input class="form-control" type="text" name="lab_fee" id="lab_fee" required>
                                                 <label for="lab_fee">Laboratory Fee</label>
                                             </div>
@@ -130,16 +135,34 @@ if (isset($_POST['save_payment'])) {
                                                 <i class="fas fa-money-bill prefix"></i>
                                                 <input class="form-control" type="text" name="nstp_fee" id="nstp_fee" required>
                                                 <label for="nstp_fee">NSTP Fee</label>
-                                                <small>Note: Enter 0 if this field doesn't existing</small>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <div class="md-form">
-                                                <i class="fas fa-hashtag prefix"></i>
-                                                <input type="text" class="form-control" name="particular" id="particular" required>
-                                                <label for="particular">Particular</label>
-                                            </div>
+                                                <select class="mdb-select md-form" name="particular" id="particular">
+                                                    <option value="">Select Particular</option>
+                                                    <option value="1">1st Sem</option>
+                                                    <option value="2">2nd sem</option>    
+                                                </select>
+                                            </div>  
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="md-form">
+                                                <select class="mdb-select md-form" name="school_year" id="school_year">
+                                                    <option value="">Select School Year</option>
+                                                    <?php
+                                                        $date2=date('Y', strtotime('+1 Years'));
+                                                        for($i=date('Y'); $i<$date2+6;$i++){
+                                                            echo "<option value='".$i."-".($i+1)."'>".$i."-".($i+1)."</option>";
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-12">
                                             <label for="sub_total">Sub Total</label>
                                             <input class="sub_total_div ml-3" type="text" id="sub_total" name="sub_total" readonly>
@@ -155,7 +178,7 @@ if (isset($_POST['save_payment'])) {
                                             <label for="sub_total">Total</label>
                                             <input class="total_div ml-3" type="text" id="total_fee" name="total_fee" readonly>
                                         </div>
-                                        <button type="submit" class="btn btn-primary btn-md" name="add_assessment">Add</button>
+                                        <button type="submit" class="btn btn-primary btn-md mt-4" name="add_assessment">Add</button>
                                     </div>
                                 </form>
                             </div>
@@ -163,7 +186,7 @@ if (isset($_POST['save_payment'])) {
                     </div>
 				</div>
 			</div>
-            <div class="col-md-8 mb-2">
+            <div class="col-md-7 mb-2">
 				<div class="row">
                     <div class="col-md-12 mb-2">
                         <div class="card">
@@ -177,7 +200,7 @@ if (isset($_POST['save_payment'])) {
                                             <thead>
                                                 <tr>
                                                     <?php
-                                                        $stud_head=explode(",","No,OR Number,Name,Subjects,Registration Fee,NSTP Fee,Lab Fee,Tuition Fee,Total,Action");
+                                                        $stud_head=explode(",","No,OR Number,Name,Subjects,Registration Fee,NSTP Fee,Lab Fee,Tuition Fee,School Year,Particular,Subtotal,Total,Action");
                                                         foreach($stud_head as $stud_val)
                                                         {
                                                             echo "<th>".$stud_val."</th>";
@@ -191,7 +214,11 @@ if (isset($_POST['save_payment'])) {
                                                     assessment.student_id AS student_id,
                                                     assessment.id AS assessment_id, assessment.or_number AS or_number,
                                                     CONCAT_WS(' ', students.firstname, students.lastname) fullname, assessment.reg_gen_fee AS reg_gen_fee,
-                                                    assessment.nstp_fee AS nstp_fee, assessment.lab_fee AS lab_fee,assessment.tuition_fee AS tuition_fee,
+                                                    assessment.nstp_fee AS nstp_fee, assessment.lab_fee AS lab_fee,
+                                                    assessment.tuition_fee AS tuition_fee,
+                                                    assessment.school_year AS school_year,
+                                                    assessment.particular AS particular,
+                                                    assessment.subtotal AS subtotal,
                                                     assessment.total AS total FROM assessment INNER JOIN students WHERE students.id=assessment.student_id",array());
                                                     for ($i=0; $i < count($disp_assessment); $i++) { 
                                                         $get_subjects = retrieve("SELECT * FROM assessment_subject WHERE assessment_id=?",array($disp_assessment[$i]['assessment_id']));
@@ -204,11 +231,11 @@ if (isset($_POST['save_payment'])) {
                                                             <td>".$disp_assessment[$i]['nstp_fee']."</td>
                                                             <td>".$disp_assessment[$i]['lab_fee']."</td>
                                                             <td>".$disp_assessment[$i]['tuition_fee']."</td>
+                                                            <td>".$disp_assessment[$i]['school_year']."</td>
+                                                            <td>".($disp_assessment[$i]['particular']==1 ? "1st SEM" : "2nd SEM")."</td>
+                                                            <td>".$disp_assessment[$i]['subtotal']."</td>
                                                             <td>".$disp_assessment[$i]['total']."</td>
                                                             <td>
-                                                                <span class='m-1 view_assessment'>
-                                                                    <i class='fas fa-eye'></i>
-                                                                </span>
                                                                 <span class='m-1 edit_assessment' title='Edit'
                                                                         edit_assessment_id='".$disp_assessment[$i]['assessment_id']."' 
                                                                         edit_assessment_student_id='".$disp_assessment[$i]['student_id']."'
@@ -248,7 +275,7 @@ if (isset($_POST['save_payment'])) {
                                             <thead>
                                                 <tr>
                                                     <?php
-                                                        $stud_head=explode(",","ID,OR Number,Name,Amount,Amount Paid,Total Left,Date Paid,Action");
+                                                        $stud_head=explode(",","ID,OR Number,Name,Previous Balance,Credit,Current Balance,Date Paid,Action");
                                                         foreach($stud_head as $stud_val)
                                                         {
                                                             echo "<th>".$stud_val."</th>";
@@ -258,14 +285,21 @@ if (isset($_POST['save_payment'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                    $disp_payments = retrieve("SELECT payments.id as payment_id,
+                                                    $disp_payments = retrieve("SELECT
+                                                    payments.id AS payment_id,
                                                     assessment.or_number AS or_number,
                                                     CONCAT_WS(' ', students.firstname, students.lastname) stud_name,
-                                                    assessment.total AS total,payments.amount AS amount_paid,payments.total_left AS total_left,
-                                                    payments.date_paid AS date_paid
+                                                    payments.amount AS amount_paid,
+                                                    payments.balance AS balance,
+                                                    payments.date_paid AS date_paid,
+                                                    payments.total AS total,
+                                                    payments.amount AS amount,
+                                                    payments.date_paid AS date_paid,
+                                                    SUM(payments.total - payments.amount) OVER (PARTITION BY assessment.or_number ORDER BY payments.date_paid) AS balance
                                                     FROM payments 
-                                                    INNER JOIN assessment ON assessment.id=payments.assessment_id 
-                                                    INNER JOIN students ON students.id=assessment.student_id",array());
+                                                    INNER JOIN assessment ON payments.assessment_id=assessment.id
+                                                    INNER JOIN students ON students.id=assessment.student_id
+                                                    ORDER BY payments.date_paid",array());
                                                     for ($i=0; $i < count($disp_payments); $i++) { 
                                                     echo "<tr>
                                                             <td>".$disp_payments[$i]['payment_id']."</td>
@@ -273,7 +307,7 @@ if (isset($_POST['save_payment'])) {
                                                             <td>".$disp_payments[$i]['stud_name']."</td>
                                                             <td>".$disp_payments[$i]['total']."</td>
                                                             <td>".$disp_payments[$i]['amount_paid']."</td>
-                                                            <td>".$disp_payments[$i]['total_left']."</td>
+                                                            <td>".$disp_payments[$i]['balance']."</td>
                                                             <td>".$disp_payments[$i]['date_paid']."</td>
                                                             <td>
                                                                 <span class='m-1 edit_payments' title='Edit'
@@ -301,7 +335,57 @@ if (isset($_POST['save_payment'])) {
                 </div>
 			</div>
 		</div>
+        
+        <div class="row">
+            <div class="col-md-5 mb-2">
+				<div class="card">
+					<div class="card-header p-2 bg-primary text-white">
+						Add Examination
+					</div>
+					<div class="card-body">
+						<div class="row">
+                            <div class="col-md-12">
+                                <form method="POST">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="md-form">
+                                                <select class="mdb-select md-form" name="getStudentsExam" id="getStudentsExam" searchable="Search here..">
+                                                    <option value="">Select Student</option>
+                                                    <?php
+                                                        $getStudentsExam=retrieve("SELECT * FROM students ORDER BY lastname ASC",array());
+                                                        for ($i=0; $i < COUNT($getStudentsExam); $i++) { 
+                                                            echo "<option value=".$getStudentsExam[$i]['id'].">".$getStudentsExam[$i]['lastname'].", ".$getStudentsExam[$i]['firstname']." ".$getStudents[$i]['middlename']."</option>";
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="md-form">
+                                                <select class="mdb-select md-form" name="exam_type" id="exam_type">
+                                                    <option value="">Select Exam Type</option>
+                                                    <?php
+                                                        $exam_type=array("Prelim"=>"1","Midterm"=>"2","Pre-Final"=>"3","Final"=>"4");
+                                                        foreach ($exam_type as $exam_key => $exam_value) {
+                                                            echo "<option value='".$exam_value."'>".$exam_key."</option>";
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+        </div>
 	</div>
+</div>
+<div class="text-center bg-primary p-4 mt-2 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
+    Copyright &copy; 2022
+    <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a>
 </div>
 <?php include('includes/modal.php') ?>
 <?php include('includes/footer.php'); ?>

@@ -33,8 +33,10 @@ if (isset($_POST['submit'])) {
                 array($_POST['schoolid'],"Student","Registration Page","Create Account",
                     "<details>
                         <p>Create SAIS Account</p>
-                        <p>School ID: ".$_POST['schoolid']."</p>
-                        <p>Name: ".$_POST['firstname']." ".$_POST['middlename']." ".$_POST['lastname']."</p>
+                        <p>
+                            School ID: ".$_POST['schoolid']."<br>
+                            Name: ".$_POST['firstname']." ".$_POST['middlename']." ".$_POST['lastname']."
+                        </p>
                     </details>",date("Y-m-d h:i:s a")));    
 
             echo "<script type='module'>

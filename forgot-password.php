@@ -50,16 +50,17 @@
     </div>
 </div>
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 //Create an instance; passing `true` enables exceptions
 
 if (isset($_POST['forgot_password'])) {
+
     $email = htmlspecialchars($_POST['email']);
     $get_email = retrieve("SELECT * FROM students WHERE email=?",array($email));
     $get_password = retrieve("SELECT * FROM login_credentials WHERE user_id=?",array($get_email[0]['id']));
@@ -73,14 +74,15 @@ if (isset($_POST['forgot_password'])) {
 
     if ($check_email > 0) {
         $mail = new PHPMailer(true);
-        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-        $mail->SMTPDebug = 2; //Debugging
+        $mail->CharSet =  "utf-8";
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        // $mail->SMTPDebug = 2; //Debugging
         $mail->isSMTP();
-        $mail->Host = "ssl://smtp.gmail.com:465"; //Host Name
+        $mail->Host = "smtp.gmail.com"; //Host Name
         $mail->SMTPAuth = true; //if SMTP Host requires authentication to send email
         $mail->Username = "gct.assessorsoffice@gmail.com";
         $mail->Password = "@55355OR$";
-        $mail->SMTPSecure = "false";
+        $mail->SMTPSecure = "ssl";
         $mail->Port = 465;
         $mail->setFrom('gct.assessorsoffice@gmail.com', 'GCT Assessors Office');
         $mail->AddReplyTo('gct.assessorsoffice@gmail.com', 'GCT Assessors Office');
