@@ -4,6 +4,7 @@
 <?php
 if (isset($_POST['add_assessment'])) {
     $get_school_id = retrieve("SELECT * FROM students WHERE id=?",array($_POST['getStudents']));
+
     manage("INSERT INTO assessment(student_id,school_id,or_number,reg_gen_fee,nstp_fee,lab_fee,tuition_fee,school_year,
         particular,subtotal,total,date_assessed,created_at,updated_at)
         VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -18,6 +19,20 @@ if (isset($_POST['add_assessment'])) {
         manage("INSERT INTO assessment_subject(assessment_id,subjects_list) VALUES(?,?)",array($pdo->lastInsertId(),$subjects));
     }
 
+    manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+    array($admin_username,"Admin","Manage Student Ledger Account","Create Ledger Account",
+        "<details>
+            <p>Student Ledger Account Creation</p>
+            <p>
+                School ID: ".$_POST['schoolid']."<br>
+                OR Number: ".$_POST['or_number']."<br>
+                Registration/Gen Fee: ".$_POST['reg_gen_fee']."<br>
+                Laboratory Fee: ".$_POST['lab_fee']."<br>
+                NSTP Fee: ".$_POST['nstp_fee']."<br>
+                Tuition Fee: ".$_POST['tuition_fee']."
+            </p>
+        </details>",date("Y-m-d h:i:s a")));
+
         echo "<script type='module'>
         Swal.fire('Success','Payment Generated Successfully','success');
     </script>";
@@ -25,12 +40,25 @@ if (isset($_POST['add_assessment'])) {
 
 if (isset($_POST['save_assessment'])) {
     $get_school_id = retrieve("SELECT * FROM students WHERE id=?",array($_POST['edit_assessment_student_id']));
+    
     manage("UPDATE assessment SET student_id=?, school_id=?, reg_gen_fee=?, 
     nstp_fee=?, lab_fee=?, tuition_fee=?, total=?, updated_at=? WHERE id=?",
     array($_POST['edit_assessment_student_id'],$get_school_id[0]['schoolid'],$_POST['edit_assessment_reg_gen_fee'],
     $_POST['edit_assessment_nstp_fee'],$_POST['edit_assessment_lab_fee'],$_POST['edit_assessment_tuition_fee'],
     $_POST['update_total_fee'],date("Y-m-d h:i:s a"),$_POST['edit_assessment_id']));
-
+    
+    manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+    array($admin_username,"Admin","Manage Student Ledger Account","Update Ledger Account",
+        "<details>
+            <p>Student Ledger Account Updates</p>
+            <p>
+                School ID: ".$get_school_id[0]['schoolid']."<br>
+                Registration/Gen Fee: ".$_POST['edit_assessment_reg_gen_fee']."<br>
+                Laboratory Fee: ".$_POST['edit_assessment_lab_fee']."<br>
+                NSTP Fee: ".$_POST['edit_assessment_nstp_fee']."<br>
+                Tuition Fee: ".$_POST['edit_assessment_tuition_fee']."
+            </p>
+        </details>",date("Y-m-d h:i:s a")));
     echo "<script type='module'>
         Swal.fire('Success','Updated Assessment Successfully','success');
     </script>";
@@ -38,12 +66,24 @@ if (isset($_POST['save_assessment'])) {
 
 if (isset($_POST['save_payment'])) {
     $get_amount = retrieve("SELECT * FROM assessment WHERE id=?",array($_POST['pay_assessment_id']));
-    $payment_total=$get_amount[0]['subtotal'];
+    $payment_subtotal=$get_amount[0]['subtotal'];
+    $payment_tuition=$get_amount[0]['tuition_fee'];
     $payment_amount=$_POST['payment_amount'];
-    $balance = $payment_total - $payment_amount;
+    
+    if ($_POST['payment_method'] == 1) {
+        $balance = $payment_subtotal - $payment_amount;
+    
+    } else if ($_POST['payment_method'] == 2) {
+        $payment_subtotal = $payment_subtotal * 0.10;
+        $balance = 0;
+    }
     manage("INSERT INTO payments(assessment_id,total,amount,balance,date_paid,created_at)
-    VALUES(?,?,?,?,?,?)",array($_POST['pay_assessment_id'],$payment_total,
-    $payment_amount,$balance,date("Y-m-d"),date("Y-m-d h:i:s a")));
+        VALUES(?,?,?,?,?,?)",array($_POST['pay_assessment_id'],$payment_subtotal,
+        $payment_amount,$balance,date("Y-m-d"),date("Y-m-d h:i:s a")));
+
+    // manage("INSERT INTO payments(assessment_id,total,amount,balance,date_paid,created_at)
+    // VALUES(?,?,?,?,?,?)",array($_POST['pay_assessment_id'],$payment_subtotal,
+    // $payment_amount,$balance,date("Y-m-d"),date("Y-m-d h:i:s a")));
 
     echo "<script type='module'>
         Swal.fire('Success','Payment Paid','success');
@@ -219,7 +259,7 @@ if (isset($_POST['save_payment'])) {
                                                     assessment.school_year AS school_year,
                                                     assessment.particular AS particular,
                                                     assessment.subtotal AS subtotal,
-                                                    assessment.total AS total FROM assessment INNER JOIN students WHERE students.id=assessment.student_id",array());
+                                                    assessment.total AS total FROM assessment INNER JOIN students ON students.id=assessment.student_id",array());
                                                     for ($i=0; $i < count($disp_assessment); $i++) { 
                                                         $get_subjects = retrieve("SELECT * FROM assessment_subject WHERE assessment_id=?",array($disp_assessment[$i]['assessment_id']));
                                                     echo "<tr>  
@@ -285,21 +325,16 @@ if (isset($_POST['save_payment'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                    $disp_payments = retrieve("SELECT
-                                                    payments.id AS payment_id,
+                                                    $disp_payments = retrieve("SELECT payments.id as payment_id,
                                                     assessment.or_number AS or_number,
                                                     CONCAT_WS(' ', students.firstname, students.lastname) stud_name,
+                                                    assessment.total AS total,
                                                     payments.amount AS amount_paid,
                                                     payments.balance AS balance,
-                                                    payments.date_paid AS date_paid,
-                                                    payments.total AS total,
-                                                    payments.amount AS amount,
-                                                    payments.date_paid AS date_paid,
-                                                    SUM(payments.total - payments.amount) OVER (PARTITION BY assessment.or_number ORDER BY payments.date_paid) AS balance
+                                                    payments.date_paid AS date_paid
                                                     FROM payments 
-                                                    INNER JOIN assessment ON payments.assessment_id=assessment.id
-                                                    INNER JOIN students ON students.id=assessment.student_id
-                                                    ORDER BY payments.date_paid",array());
+                                                    INNER JOIN assessment ON assessment.id=payments.assessment_id 
+                                                    INNER JOIN students ON students.id=assessment.student_id",array());
                                                     for ($i=0; $i < count($disp_payments); $i++) { 
                                                     echo "<tr>
                                                             <td>".$disp_payments[$i]['payment_id']."</td>
