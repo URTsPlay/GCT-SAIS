@@ -36,16 +36,6 @@
         </div>
     </div>
     
-    <!-- <div class="row pa-7 white-text" style="background-color: #FFB300;">
-        <div class="col-md-6">
-            <h6 style="font-size:20px;" class="font-weight-bold h6"><?php echo $student_fullname; ?></h6>
-            <span>School ID No. <?php echo $student_schoolid; ?></span>
-        </div>
-        <div class="col-md-6">
-            <h6 style="font-size:20px;" class="font-weight-bold h6"><?php echo $course." - ".$year; ?></h6>
-            <span>COURSE AND YEAR</span>
-        </div>
-    </div> -->
     <h6 style="font-size:20px;" class="font-weight-bold mt-5 mb-2">QUICK ACCESS</h6>
     <div class="row">
         <div class="col-md-4">

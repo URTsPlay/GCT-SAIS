@@ -184,7 +184,14 @@
               <input type="text" name="pay_assessment_id" id="pay_assessment_id" hidden>
               <h6 class="ml-auto mr-auto">OR Number: <span id="disp_or_number"></span></h6>
               <div class="col-md-12">
-
+                <small class="grey-text mt-2">Payment Method</small>
+                <select class="form-control" name="payment_method" id="payment_method" required>
+                  <option value=""></option>
+                  <option value="1">Down Payment</option>
+                  <option value="2">Full Payment</option>
+                </select>
+              </div>
+              <div class="col-md-12">
                 <small class="grey-text mt-2">Amount</small>
                 <input class="form-control" type="text" name="payment_amount" id="payment_amount" required>
               </div>
