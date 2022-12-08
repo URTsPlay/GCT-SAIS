@@ -55,21 +55,17 @@
                 </thead>
                 <tbody>
                     <?php
-                        $get_stud_ledger=retrieve("SELECT
-                        payments.id AS payment_id,
+                        $get_stud_ledger=retrieve("SELECT payments.id as payment_id,
                         assessment.or_number AS or_number,
                         CONCAT_WS(' ', students.firstname, students.lastname) stud_name,
-                        payments.amount AS amount_paid,
+                        assessment.total AS total,
+                        assessment.particular AS particular,
+                        payments.amount_paid AS amount_paid,
                         payments.balance AS balance,
-                        payments.date_paid AS date_paid,
-                        payments.total AS total,
-                        payments.amount AS amount,
-                        payments.date_paid AS date_paid,
-                        SUM(payments.total - payments.amount) OVER (PARTITION BY assessment.or_number ORDER BY payments.date_paid) AS balance
+                        payments.date_paid AS date_paid
                         FROM payments 
-                        INNER JOIN assessment ON payments.assessment_id=assessment.id
-                        INNER JOIN students ON students.id=assessment.student_id
-                        WHERE students.schoolid=? ORDER BY payments.date_paid ",array($student_schoolid));
+                        INNER JOIN assessment ON assessment.id=payments.assessment_id 
+                        INNER JOIN students ON students.id=assessment.student_id WHERE students.schoolid=?",array($student_schoolid));
 
                         for ($i=0; $i < COUNT($get_stud_ledger); $i++) { 
                             echo "<tr>
@@ -86,5 +82,10 @@
             </table>
         </div>
     </div>
+</div>
+<div class="text-center bg-primary p-4 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
+    Copyright &copy; 2022
+    <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a><br>
+    <span>Developed by Project69</span>
 </div>
 <?php include('includes/footer.php'); ?>

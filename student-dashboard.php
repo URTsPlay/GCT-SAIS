@@ -1,6 +1,6 @@
 <?php  include("includes/header.php");  ?>
 <?php include('includes/navigation.php'); ?>
-<?php $page_title="GCT SAIS"; ?>
+<?php $page_title="Home Page"; ?>
 <div class="container ma-0 pa-0 mt-3" background-color="whitesmoke;">
     <div class="row">
         <div class="col-md-12">
@@ -10,8 +10,8 @@
 	</div>
     
     <div class="elevation-0 ma-0" style="background-color:whitesmoke !important;">
-        <div class="pa-7 elevation-0 ma-0 white-text">
-            <div class="card pa-0 ma-0 white-text" style="background-color:#23395d;">
+        <div class="pa-7 elevation-0 ma-0 white-text" style="background-color:#FFB300;">
+            <div class="card pa-0 ma-0 white-text" style="background-color:#FFB300;">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
@@ -36,6 +36,16 @@
         </div>
     </div>
     
+    <!-- <div class="row pa-7 white-text" style="background-color: #FFB300;">
+        <div class="col-md-6">
+            <h6 style="font-size:20px;" class="font-weight-bold h6"><?php echo $student_fullname; ?></h6>
+            <span>School ID No. <?php echo $student_schoolid; ?></span>
+        </div>
+        <div class="col-md-6">
+            <h6 style="font-size:20px;" class="font-weight-bold h6"><?php echo $course." - ".$year; ?></h6>
+            <span>COURSE AND YEAR</span>
+        </div>
+    </div> -->
     <h6 style="font-size:20px;" class="font-weight-bold mt-5 mb-2">QUICK ACCESS</h6>
     <div class="row">
         <div class="col-md-4">

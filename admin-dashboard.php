@@ -5,7 +5,7 @@
   content: "\e201"; 
 }
 </style>
-<?php $page_title="GCT SAIS"; ?>
+<?php $page_title="Admin Dashboard"; ?>
 <div class="container mt-3">
     <div class="page-header">
         <h1 class="text-center">Assessor's Office</h1>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class='col-md-4 mt-2'>
+        <div class='col-md-4 mt-2 d-none'>
             <div class='card text-center'>
                 <div class='d-flex flex-row'>
                     <div class='p-2'>
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div class='col-md-4 mt-2'>
+        <div class='col-md-4 mt-2 d-none'>
             <div class='card text-center'>
                 <div class='d-flex flex-row'>
                     <div class='p-2'>
@@ -117,8 +117,9 @@
         </div>
     </div>
 </div>
-<div class="text-center bg-primary p-4 mt-2 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
+<div class="text-center bg-primary p-4 mt-5 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
     Copyright &copy; 2022
-    <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a>
+    <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a><br>
+    <span>Developed by Project69</span>
 </div>
 <?php include('includes/footer.php'); ?>

@@ -4,7 +4,7 @@
 <?php
 
 if (isset($_POST['add_courses'])) {
-    manage("INSERT INTO subjects(course_code,course_name)
+    manage("INSERT INTO courses(course_code,course_name)
         VALUES(?,?)",array($_POST['course_code'],$_POST['course_name']));
     
     manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",

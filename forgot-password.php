@@ -73,49 +73,64 @@ if (isset($_POST['forgot_password'])) {
     }
 
     if ($check_email > 0) {
-        $mail = new PHPMailer(true);
-        $mail->CharSet =  "utf-8";
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-        // $mail->SMTPDebug = 2; //Debugging
-        $mail->isSMTP();
-        $mail->Host = "smtp.gmail.com"; //Host Name
-        $mail->SMTPAuth = true; //if SMTP Host requires authentication to send email
-        $mail->Username = "gct.assessorsoffice@gmail.com";
-        $mail->Password = "@55355OR$";
-        $mail->SMTPSecure = "ssl";
-        $mail->Port = 465;
-        $mail->setFrom('gct.assessorsoffice@gmail.com', 'GCT Assessors Office');
-        $mail->AddReplyTo('gct.assessorsoffice@gmail.com', 'GCT Assessors Office');
-        $mail->addAddress($email);
-        $mail->isHTML(true);
-        $mail->SMTPOptions = array('ssl' => array('verify_peer' => false, 
-                'verify_peer_name' => false, 'allow_self_signed' => true)); //start connection
-
-        $mail->Username = "gct.assessorsoffice@gmail.com"; // set email add
-        $mail->Password = "@55355OR$"; // set password
-        $mail->FromName = 'GCT Assessors Office';
-        $mail->Subject = "Forgot Password";
-        $mail->Body = "<i>Hi ".$get_email[0]['firstname']. " ".$get_email[0]['lastname']." this is your Password</i>".$get_password[0]['password'];
-        $mail->AltBody = "This is the plain text version of the email content";
-        
-        if (!$mail->send()) {
-            ob_end_clean();
-                echo "<script type='module'>
+        $to = $email;
+        $subject = "Forgot Password";
+        $text = "<i>Hi ".$get_email[0]['firstname']. " ".$get_email[0]['lastname']." this is your Password</i>".$get_password[0]['password'];
+        $headers = "From: gct.assessorsoffice@gmail.com";
+        mail($to,$subject,$text,$headers);
+        echo "<script type='module'>
             Swal.fire('Error','Failure in sending a Password to email, please check your internet connection','error');
-        </script>".$mail->ErrorInfo;
-        } else {
-                ob_end_clean();
-                echo "<script type='module'>
-                    Swal.fire('Success','Password sent successfully, please check your email','success');
-                </script>";
-                return true;
-        }
-    
+        </script>";
     } else {
         echo "<script type='module'>
-        Swal.fire('Error','This email is not existing in our system','error');
-    </script>";
+            Swal.fire('Error','This email is not existing in our system','error');
+        </script>";
     }
+
+    // if ($check_email > 0) {
+    //     $mail = new PHPMailer(true);
+    //     $mail->CharSet =  "utf-8";
+    //     $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+    //     // $mail->SMTPDebug = 2; //Debugging
+    //     $mail->isSMTP();
+    //     $mail->Host = "smtp.gmail.com"; //Host Name
+    //     $mail->SMTPAuth = true; //if SMTP Host requires authentication to send email
+    //     $mail->Username = "gct.assessorsoffice@gmail.com";
+    //     $mail->Password = "@55355OR$";
+    //     $mail->SMTPSecure = "ssl";
+    //     $mail->Port = 465;
+    //     $mail->setFrom('gct.assessorsoffice@gmail.com', 'GCT Assessors Office');
+    //     $mail->AddReplyTo('gct.assessorsoffice@gmail.com', 'GCT Assessors Office');
+    //     $mail->addAddress($email);
+    //     $mail->isHTML(true);
+    //     $mail->SMTPOptions = array('ssl' => array('verify_peer' => false, 
+    //             'verify_peer_name' => false, 'allow_self_signed' => true)); //start connection
+
+    //     $mail->Username = "gct.assessorsoffice@gmail.com"; // set email add
+    //     $mail->Password = "@55355OR$"; // set password
+    //     $mail->FromName = 'GCT Assessors Office';
+    //     $mail->Subject = "Forgot Password";
+    //     $mail->Body = "<i>Hi ".$get_email[0]['firstname']. " ".$get_email[0]['lastname']." this is your Password</i>".$get_password[0]['password'];
+    //     $mail->AltBody = "This is the plain text version of the email content";
+        
+    //     if (!$mail->send()) {
+    //         ob_end_clean();
+    //             echo "<script type='module'>
+    //         Swal.fire('Error','Failure in sending a Password to email, please check your internet connection','error');
+    //     </script>".$mail->ErrorInfo;
+    //     } else {
+    //             ob_end_clean();
+    //             echo "<script type='module'>
+    //                 Swal.fire('Success','Password sent successfully, please check your email','success');
+    //             </script>";
+    //             return true;
+    //     }
+    
+    // } else {
+    //     echo "<script type='module'>
+    //     Swal.fire('Error','This email is not existing in our system','error');
+    // </script>";
+    // }
 }
 ?>
 <?php include('includes/footer.php'); ?>
