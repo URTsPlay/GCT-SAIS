@@ -3,6 +3,7 @@
 <?php $page_title="GCT SAIS"; ?>
 <?php
     $get_profile=retrieve("SELECT * FROM students WHERE schoolid=?",array($_GET['user']));
+    $name=strtoupper($get_profile[0]['lastname'].", ".$get_profile[0]['firstname']." ".$get_profile[0]['middlename']);
     $get_courses=retrieve("SELECT * FROM courses WHERE course_code=?",array($get_profile[0]['course']));
 
     if (isset($_POST['save_profile'])) {
@@ -23,7 +24,15 @@
     
         if ($get_curr_pass[0]['password'] == $_POST['current_password']) {
             if ($_POST['new_password'] == $_POST['confirm_new_password']) {
-                $change_pass=manage("UPDATE login_credentials SET password=? WHERE username=?",array($_POST['new_password'],$_GET['user']));
+                manage("UPDATE login_credentials SET password=? WHERE username=?",array($_POST['new_password'],$_GET['user']));
+                manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+                array($student_username,"Student","Profile","Change Password",
+                    "<details>
+                        <p>Change Password</p>
+                        <p>
+                            Username: ".$_GET['user']."
+                        </p>
+                    </details>",date("Y-m-d h:i:s a")));
                 echo "<script type='module'>
                 Swal.fire('Success','Password changes successfully','success');
             </script>";
@@ -43,7 +52,7 @@
     <div class="card-body white-text text-center">
         <div class="row d-flex justify-content-center">
             <div class="col-md-6">
-                <h1 class="font-weight-bold h2">Account Settings</h1>
+                <h1 class="font-weight-bold h2">Student Information</h1>
             </div>
         </div>
     </div>
@@ -55,23 +64,51 @@
         <div class="row mb-4">
             <div class="col-md-6 mb-4">
                 <div class="card">
-                    <div class="card-header">Profile Information</div>
+                    <div class="card-header">Personal Information</div>
                     <div class="card-body">
-                        <form method="POST">
-                            <input type="hidden" id="edit_id" name="edit_id" class="form-control mb-3" value="<?php echo $get_profile[0]['id']; ?>">
-                            <input type="text" id="edit_lastname" name="edit_lastname" class="form-control mb-3" value="<?php echo $get_profile[0]['lastname']; ?>">
-                            <input type="text" id="edit_firstname" name="edit_firstname" class="form-control mb-3" placeholder="First name" value="<?php echo $get_profile[0]['firstname']; ?>">
-                            <input type="text" id="edit_middlename" name="edit_middlename" class="form-control mb-3" placeholder="Middle name" value="<?php echo $get_profile[0]['middlename']; ?>">
-                            <input type="email" id="edit_email" name="edit_email" class="form-control mb-3" placeholder="E-mail address" value="<?php echo $get_profile[0]['email']; ?>">
-                            <input type="text" id="edit_contact_number" name="edit_contact_number" class="form-control mb-3" placeholder="Contact Number" value="<?php echo $get_profile[0]['contact_number']; ?>">
-                            <select class="form-control mb-3" name="edit_course" id="edit_course">
-                                <option value="<?php echo ($get_courses[0]['course_code']!="" ? $get_courses[0]['course_code'] : '') ?>"><?php echo $get_courses[0]['course_name']; ?></option>
-                            </select>
-                            <input type="number" id="edit_year" name="edit_year" class="form-control mb-3" value="<?php echo $get_profile[0]['year']; ?>">
-                            <div class="text-center">
-                                <button type="submit" id="save_profile" name="save_profile" class="btn btn-info btn-md">Save changes</button>
-                            </div>
-                        </form>
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                            <?php
+                                $profile_info=array(
+                                    "Name"=>$name,
+                                    "Birthdate"=>date("l, d F Y",strtotime($get_profile[0]['birthdate'])),
+                                    "Home Address"=>$get_profile[0]['address'],
+                                    "Mobile Number"=>$get_profile[0]['contact_number'],
+                                    "E-Mail Address"=>$get_profile[0]['email']
+                                );
+                                foreach ($profile_info as $prof_key => $prof_value) {
+                                    echo "
+                                        <tr>
+                                            <td>".$prof_key."</td>
+                                            <td class='font-weight-bold'>".$prof_value."</td>
+                                        </tr>
+                                    ";
+                                }
+                           ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-header">STUDENT IDENTIFICATION AND COURSE RECORD</div>
+                    <div class="card-body">
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                            <?php
+                                $student_iden=array(
+                                    "Student ID"=>$student_schoolid,
+                                    "Course"=>$get_profile[0]['course'],
+                                    "Year Level"=>$get_profile[0]['year'],
+                                );
+                                foreach ($student_iden as $stud_key => $stud_value) {
+                                    echo "
+                                        <tr>
+                                            <td>".$stud_key."</td>
+                                            <td class='font-weight-bold'>".$stud_value."</td>
+                                        </tr>
+                                    ";
+                                }
+                           ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

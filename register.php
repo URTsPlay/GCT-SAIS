@@ -9,6 +9,8 @@
 <?php $page_title="GCT SAIS"; ?>
 <?php
 if (isset($_POST['submit'])) {
+
+    $address=$_POST['home_address'].", ".$_POST['city'].", ".$_POST['province'].", ".$_POST['zip_code'];
     
     $check_schoolid=retrieve("SELECT COUNT(*) as count_schoolid FROM students WHERE schoolid=?",array($_POST['schoolid']));
 
@@ -21,9 +23,10 @@ if (isset($_POST['submit'])) {
 
             if ($_POST['password'] == $_POST['confirm_password']) {
                 
-                manage("INSERT INTO students(schoolid,lastname,firstname,middlename,email,contact_number,course,year,created_at,updated_at)
-                VALUES(?,?,?,?,?,?,?,?,?,?)",array($_POST['schoolid'],$_POST['lastname'],$_POST['firstname'],$_POST['middlename'],
-                $_POST['email'],$_POST['contact_number'],$_POST['course'],$_POST['year'],date("Y-m-d h:i:s a"),date("Y-m-d h:i:s a")));
+                manage("INSERT INTO students(schoolid,lastname,firstname,middlename,birthdate,address,gender,email,contact_number,course,year,created_at,updated_at)
+                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",array($_POST['schoolid'],$_POST['lastname'],$_POST['firstname'],$_POST['middlename'],date("Y-m-d",strtotime($_POST['birthdate'])),
+                $address,$_POST['gender'],$_POST['email'],$_POST['contact_number'],$_POST['course'],
+                $_POST['year'],date("Y-m-d h:i:s a"),date("Y-m-d h:i:s a")));
                 
                 manage("INSERT INTO login_credentials(user_id,username,password,type,status,created_at,updated_at) 
                         VALUES(?,?,?,?,?,?,?)",array($pdo->lastInsertId(),$_POST['schoolid'],$_POST['password'],2,1,date("Y-m-d H:i:s a"),date("Y-m-d H:i:s a")));
@@ -88,25 +91,57 @@ if (isset($_POST['submit'])) {
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <?php
+                                $fullname = array("Last Name"=>"lastname","First Name"=>"firstname","Middle Name"=>"middlename");
+                                foreach ($fullname as $name_key => $name_value) {
+                                    echo "
+                                    <div class='col-md-4'>
+                                        <div class='md-form'>
+                                            <i class='fas fa-user-circle prefix'></i>
+                                            <input class='form-control' type='text' name='".$name_value."' id='".$name_value."' required>
+                                            <label for='lastname'>".$name_key."</label>
+                                        </div>
+                                    </div>";
+                                }
+                            ?>
+                            <div class="col-md-3">
                                 <div class="md-form">
-                                    <i class="fas fa-user prefix"></i>
-                                    <input class="form-control" type="text" name="lastname" id="lastname" required>
-                                    <label for="lastname">Last Name</label>
+                                    <select class="mdb-select md-form" name="province" id="province"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="md-form">
+                                    <select class="mdb-select md-form" name="city" id="city"></select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="md-form">
-                                    <i class="fas fa-user prefix"></i>
-                                    <input class="form-control" type="text" name="firstname" id="firstname" required>
-                                    <label for="firstname">First Name</label>
+                                    <i class="fas fa-map-marker-alt prefix"></i>
+                                    <input class="form-control" type="text" name="home_address" id="home_address">
+                                    <label for="home_address">Home Number and Address</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="md-form">
+                                    <i class="fas fa-map-pin prefix"></i>
+                                    <input class="form-control" type="text" name="zip_code" id="zip_code">
+                                    <label for="zip_code">Zip Code</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="md-form">
-                                    <i class="fas fa-user prefix"></i>
-                                    <input class="form-control" type="text" name="middlename" id="middlename">
-                                    <label for="middlename">Middle Name</label>
+                                    <i class="fas fa-calendar prefix"></i>
+                                    <input class="form-control" type="date" name="birthdate" id="birthdate">
+                                    <label for="birthdate">Birthdate</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="md-form">
+                                    <select class="mdb-select md-form" name="gender" id="gender">
+                                        <option value="">Select Gender</option>
+                                        <option value="1">Male</option>
+                                        <option value="2">Female</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -123,7 +158,7 @@ if (isset($_POST['submit'])) {
                                     <label for="contact_number">Contact Number</label>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="md-form">
                                     <select class="mdb-select md-form" name="course" id="course" searchable="Search here..">
                                         <option value="">Select Course</option>
@@ -136,7 +171,7 @@ if (isset($_POST['submit'])) {
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="md-form">
                                     <input class="form-control" type="number" name="year" id="year" required>
                                     <label for="year">Year</label>
@@ -181,13 +216,16 @@ if (isset($_POST['submit'])) {
     <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a>
 </div>
 <?php include('includes/footer.php'); ?>
+<script src="./assets/js/city.js"></script>
 <script>
+window.onload = function() {
+    var $ = new City();
+	$.showProvinces("#province");
+	$.showCities("#city");
+}
+
 $(document).ready(function(){
-
     $('.mdb-select').materialSelect();
-    var captcha_code_display = Math.random().toString(36).slice(2, 9).toUpperCase();
-    $("#captcha_code_display").val(captcha_code_display);
-
     // var url = "data/courses.json";
     // $.getJSON(url, function (data) {
     //     $.each(data, function (index, value) {

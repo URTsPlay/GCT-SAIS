@@ -160,25 +160,6 @@ if (isset($_POST['save_subject'])) {
 <?php include('includes/footer.php'); ?>
 <script>
 $(document).ready(function(){
-    $('.mdb-select').materialSelect();
-    $("#tblSubjects").DataTable({
-		"scrollX": true,
-		"info": true,
-		"lengthChange": true,
-		"paging": true,
-		"searching": true,
-        "pageLength":10,
-		"order": [],
-	});
-
-    $(".edit_subjects").click(function(){
-		$("#edit_subjects_id").val($(this).attr("edit_subjects_id"));
-		$("#edit_subjects_sub_name").val($(this).attr("edit_subjects_sub_name"));
-		$("#edit_subjects_sub_units").val($(this).attr("edit_subjects_sub_units"));
-		$("#edit_subjects_sub_lec_hours").val($(this).attr("edit_subjects_sub_lec_hours"));
-		$("#edit_subjects_sub_lab_hours").val($(this).attr("edit_subjects_sub_lab_hours"));
-		$("#edit_subjects_modal").modal("show");
-	});
     
 })
 </script>

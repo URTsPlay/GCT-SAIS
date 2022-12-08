@@ -205,3 +205,80 @@
     </div>
   </div>
 </div>
+
+<!--Proceed to Payment-->
+<div class="modal fade" id="exam_payments_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header primary-color text-white">
+        <h5 class="modal-title w-100 text-white">Pay Examination</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+            <div class="row mt-3">
+              <input type="text" name="pay_exam_id" id="pay_exam_id" hidden>
+              <h6 class="ml-auto mr-auto">OR Number: <span id="exam_disp_or_number"></span></h6>
+              <input type="text" name="exam_tuition_fee" id="exam_tuition_fee" hidden>
+              <input type="text" name="exam_balance" id="exam_balance" hidden>
+              <div class="col-md-12">
+                <small class="grey-text mt-2">Exam Type</small>
+                <select class="form-control" name="exam_type" id="exam_type" required>
+                  <option value=""></option>
+                  <option value="1">Prelim</option>
+                  <option value="2">Midterm</option>
+                  <option value="3">Pre-Final</option>
+                  <option value="4">Final</option>
+                </select>
+              </div>
+              <div class="d-none">
+                <div class="col-md-12">
+                  <label for="prelim_total_pay">Amount To Pay for Prelim</label>
+                  <input class="prelim_total_pay_div ml-3" type="text" id="prelim_total_pay" name="prelim_total_pay" readonly>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <small class="grey-text mt-2">Amount</small>
+                <input class="form-control" type="text" name="exam_payment_amount" id="exam_payment_amount" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" name="save_exam_pay">Save</button>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-elegant btn-sm" data-dismiss="modal" title="Close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Show Password-->
+<div class="modal fade" id="show_password_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header primary-color text-white">
+        <h5 class="modal-title w-100 text-white">Show Password</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mt-3">
+          <input type="text" name="show_pass_id" id="show_pass_id" hidden>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="showPass">
+            <label class="form-check-label" for="showPass">Show Password</label>
+          </div>
+          <div class="col-md-12">
+            <input class="form-control" type="password" name="show_password" id="show_password">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-elegant btn-sm" data-dismiss="modal" title="Close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
