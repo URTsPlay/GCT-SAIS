@@ -3,11 +3,10 @@
 <?php $page_title="Manage Students"; ?>
 <style>
 .profile_photo {
-  width: 20px;
-  height: 20px;
+  width: 55px;
+  height: 55px;
   line-height: 40px;
   border-radius: 50%;
-  font-size: 15px;
   color: #000000;
   text-align: center;
 }
@@ -64,7 +63,7 @@ if (isset($_POST['save_student'])) {
                                                 $get_login_credentials=retrieve("SELECT * FROM login_credentials WHERE username=?",array($disp_students[$i]['schoolid']));
                                                 $disp_scholarship_type = retrieve("SELECT * FROM scholarship WHERE id=?",array($disp_students[$i]['scholarship_type']));
                                             echo "<tr>
-                                                    <td class='profile_photo' style='background-color: randomColors();'>".substr($disp_students[$i]['firstname'],0,1)."".substr($disp_students[$i]['lastname'],0,1)."</td>
+                                                    <td>".($disp_students[$i]['gender'] == 1 ? "<img class='profile_photo' src='./assets/img/male.png'>" : "<img class='profile_photo' src='./assets/img/female.png'>")."</td>
                                                     <td>".$disp_students[$i]['schoolid']."</td>
                                                     <td>".$disp_students[$i]['lastname']."</td>
                                                     <td>".$disp_students[$i]['firstname']."</td>
@@ -108,13 +107,6 @@ if (isset($_POST['save_student'])) {
 <?php include('includes/footer.php'); ?>
 <script>
 $(document).ready(function(){
-
-    var randomColors = function(){
-        const colors = ['#1ECBE1','#1AE5A9','#8B3EC1','#22DD7B','#D52AC6','#51BC43','#1FE08B'];
-        const r = colors[(Math.random() * colors.length) | 0]
-        return r;
-    }
-
 
     
     $('#showPass').on('click', function(){

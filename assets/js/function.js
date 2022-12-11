@@ -1,12 +1,9 @@
 $(document).ready(function(){
-    $('.mdb-select').materialSelect();
+    // $('.mdb-select').materialSelect();
 	
     $('[data-toggle="tooltip"]').tooltip();
 	$('[data-toggle="popover"]').popover();
 	$(".button-collapse").sideNav();
-
-	var captcha_code_display = Math.random().toString(36).slice(2, 9).toUpperCase();
-    $("#captcha_code_display").val(captcha_code_display);
 
 
     $("#edit_student_isscholar").change(function(){

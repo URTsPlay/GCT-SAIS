@@ -117,7 +117,7 @@
         </div>
     </div>
 </div>
-<div class="text-center bg-primary p-4 mt-5 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
+<div class="text-center bg-primary p-4 mt-5 white-text d-none" style="background-color: rgba(0, 0, 0, 0.05);">
     Copyright &copy; 2022
     <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a><br>
     <span>Developed by Project69</span>

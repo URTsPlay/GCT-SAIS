@@ -14,7 +14,7 @@
             <h6 style="font-size:20px;" class="font-weight-bold h6 text-caption">SY: <?php echo date("Y")."-".date("Y",strtotime("+1 Years")); ?></h6>
         </div>
         <div class="col-md-12">
-            <div class="card bg-primary white-text">
+            <div class="card blue darken-4 white-text">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="col-md-12 mt-2">
-            <div class="card bg-primary">
+            <div class="card blue darken-4">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">

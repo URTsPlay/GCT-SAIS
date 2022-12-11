@@ -225,7 +225,12 @@ window.onload = function() {
 }
 
 $(document).ready(function(){
+    
     $('.mdb-select').materialSelect();
+    
+    var captcha_code_display = Math.random().toString(36).slice(2, 9).toUpperCase();
+    $("#captcha_code_display").val(captcha_code_display);
+
     // var url = "data/courses.json";
     // $.getJSON(url, function (data) {
     //     $.each(data, function (index, value) {

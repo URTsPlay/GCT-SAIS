@@ -10,8 +10,8 @@
 	</div>
     
     <div class="elevation-0 ma-0" style="background-color:whitesmoke !important;">
-        <div class="pa-7 elevation-0 ma-0 white-text" style="background-color:#FFB300;">
-            <div class="card pa-0 ma-0 white-text" style="background-color:#FFB300;">
+        <div class="pa-7 elevation-0 ma-0 white-text blue darken-4">
+            <div class="card pa-0 ma-0 white-text blue darken-4">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
@@ -90,6 +90,7 @@
 </div>
 <div class="text-center bg-primary p-4 mt-2 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
     Copyright &copy; 2022
-    <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a>
+    <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a><br>
+    <span>Developed by Project69</span>
 </div>
 <?php include('includes/footer.php'); ?>

@@ -3,7 +3,7 @@
 <?php $page_title="GCT SAIS - Student Ledger"; ?>
 <div class="container mt-3">
     <h5 class="h5 text-uppercase pb-5">Account Ledger</h5>
-    <div class="row pa-7 white-text" style="background-color: #FFB300;">
+    <div class="row pa-7 white-text blue darken-4">
         <div class="col-md-6">
             <h6 class="h6 text-uppercase font-weight-bold" style="font-size: 24px;">Ledger of School Accounts</h6>
             <h6 style="font-size:20px;" class="font-weight-bold h6"><?php echo $student_fullname; ?></h6>
@@ -83,7 +83,7 @@
         </div>
     </div>
 </div>
-<div class="text-center bg-primary p-4 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
+<div class="text-center bg-primary p-4 d-none white-text" style="background-color: rgba(0, 0, 0, 0.05);">
     Copyright &copy; 2022
     <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a><br>
     <span>Developed by Project69</span>

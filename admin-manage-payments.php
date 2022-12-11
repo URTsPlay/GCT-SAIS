@@ -95,6 +95,14 @@ if (isset($_POST['pay_exam'])) {
     if ($_POST['exam_type'] == 1) {
         $exam_total = $set_tuition;
     }
+
+    manage("INSERT INTO exam_payments(exam_type,exam_total,amount_paid,date_paid,created_at,update_at)
+        VALUES(?,?,?,?,?)",array($_POST['exam_type'], $exam_total, $_POST['exam_payment_amount'],
+        date("Y-m-d"), date("Y-m-d h:i:s a"),date("Y-m-d h:i:s a")));
+
+    echo "<script type='module'>
+        Swal.fire('Success','Payment Exam Paid','success');
+    </script>";
 }
 
 ?>
@@ -118,7 +126,7 @@ if (isset($_POST['pay_exam'])) {
     <h1 class="mr-auto ml-auto">Student Ledger and Assessment</h1>
 	<div class="col-md-12 mt-2">
 		<div class="row">
-			<div class="col-md-4 mb-2">
+			<div class="col-md-5 mb-2">
 				<div class="card">
 					<div class="card-header p-2 bg-primary text-white">
 						Add Assessment
@@ -151,21 +159,50 @@ if (isset($_POST['pay_exam'])) {
                                         </div>
                                         <div class="col-md-4">
                                             <div class="md-form">
-                                                <select class="mdb-select md-form" name="course" id="course">
+                                                <select class="mdb-select md-form" name="course" id="course" searchable="Search here..">
                                                     <option value="">Select Course</option>
-                                                    <?php
-                                                        $getCourses=retrieve("SELECT * FROM courses",array());
-                                                        for ($i=0; $i < COUNT($getCourses); $i++) { 
-                                                            echo "<option value=".$getCourses[$i]['course_code'].">".$getCourses[$i]['course_name']."</option>";
-                                                        }
-                                                    ?>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="md-form">
                                                 <input class="form-control" type="number" name="year" id="year" required>
                                                 <label for="year">Year</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-form">
+                                                <select class="mdb-select md-form" name="particular" id="particular">
+                                                    <option value="">Select Particular</option>
+                                                    <option value="1">1st Sem</option>
+                                                    <option value="2">2nd sem</option>    
+                                                </select>
+                                            </div>  
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-form">
+                                                <select class="mdb-select md-form" name="school_year" id="school_year">
+                                                    <option value="">Select School Year</option>
+                                                    <?php
+                                                        $date2=date('Y', strtotime('+1 Years'));
+                                                        for($i=date('Y'); $i<$date2+6;$i++){
+                                                            echo "<option value='".$i."-".($i+1)."'>".$i."-".($i+1)."</option>";
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>  
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="md-form">
+                                                <select class="mdb-select" name="subjects" id="subjects">
+                                                    <option value="">Select Subjects</option>
+                                                    <!-- <?php
+                                                        $getSubjects=retrieve("SELECT * FROM curriculum",array());
+                                                        for ($i=0; $i < COUNT($getSubjects); $i++) { 
+                                                            echo "<option value='".$getSubjects[$i]['id']."'>".$getSubjects[$i]['subject_code']."</option>";
+                                                        }
+                                                    ?> -->
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -193,30 +230,6 @@ if (isset($_POST['pay_exam'])) {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="md-form">
-                                                <select class="mdb-select md-form" name="particular" id="particular">
-                                                    <option value="">Select Particular</option>
-                                                    <option value="1">1st Sem</option>
-                                                    <option value="2">2nd sem</option>    
-                                                </select>
-                                            </div>  
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="md-form">
-                                                <select class="mdb-select md-form" name="school_year" id="school_year">
-                                                    <option value="">Select School Year</option>
-                                                    <?php
-                                                        $date2=date('Y', strtotime('+1 Years'));
-                                                        for($i=date('Y'); $i<$date2+6;$i++){
-                                                            echo "<option value='".$i."-".($i+1)."'>".$i."-".($i+1)."</option>";
-                                                        }
-                                                    ?>
-                                                </select>
-                                            </div>  
-                                        </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-md-12">
                                             <label for="sub_total">Sub Total</label>
                                             <input class="sub_total_div ml-3" type="text" id="sub_total" name="sub_total" readonly>
@@ -240,7 +253,7 @@ if (isset($_POST['pay_exam'])) {
                     </div>
 				</div>
 			</div>
-            <div class="col-md-8 mb-2">
+            <div class="col-md-7 mb-2">
 				<div class="row">
                     <div class="col-md-12 mb-2">
                         <div class="card">
@@ -342,7 +355,7 @@ if (isset($_POST['pay_exam'])) {
                                     <thead>
                                         <tr>
                                             <?php
-                                                $stud_head=explode(",","ID,OR Number,Name,Previous Balance,Credit,Current Balance,Date Paid,Action");
+                                                $stud_head=explode(",","ID,OR Number,Name,Previous Balance,Credit,Current Balance,Date Paid");
                                                 foreach($stud_head as $stud_val)
                                                 {
                                                     echo "<th>".$stud_val."</th>";
@@ -371,8 +384,8 @@ if (isset($_POST['pay_exam'])) {
                                                     <td>".$disp_payments[$i]['amount_paid']."</td>
                                                     <td>".$disp_payments[$i]['balance']."</td>
                                                     <td>".$disp_payments[$i]['date_paid']."</td>
-                                                    <td>
-                                                        <span class='m-1 edit_payments' title='Edit'
+                                                    <td class='d-none'>
+                                                        <span class='m-1 edit_payments d-none' title='Edit'
                                                                 edit_payments_id='".$disp_payments[$i]['payment_id']."'
                                                                 data-toggle='modal' data-target='#edit_payments_modal'>
                                                             <i class='fas fa-pencil hvr-pop'></i>
@@ -407,15 +420,26 @@ if (isset($_POST['pay_exam'])) {
 <script>
 $(document).ready(function(){
 
-    $('.mdb-select').materialSelect();
+    // $('.mdb-select').materialSelect();
 
-    $("#exam_type").change(function(){
-        if ($("#exam_type").val() == 1) {
-            $(".d-none").removeClass();
-        } else {
-            $(".d-none").addClass();
-        }
+    var stud_year = $("#year");
+    var stud_course = $("#course");
+    var stud_sem = $("#particular");
+
+    var courses_url = "data/courses.json";
+    $.getJSON(courses_url, function (data) {
+        $.each(data, function (index, value) {
+            $('#course').append('<option value="' + value.course_code + '">' + value.course_name + '</option>');
+        })
     });
+
+    var curriculum_url = "data/curriculum.json";
+    $.getJSON(curriculum_url, function (data) {
+        $.each(data, function (index, value) {
+            $('#subjects').append('<option value="' + value.id + '">' + value.subject_code + '</option>');
+        })
+    });
+
 
     $("#reg_gen_fee").keyup(function(){
         updateSubTotal();
@@ -492,6 +516,12 @@ $(document).ready(function(){
 		$("#payments_modal").modal("show");
 	});
 
+    $("#exam_type").change(function(){
+        if ($("#exam_type").val() == 1) {
+            $(".d-none").removeClass();
+        }
+    });
+
     $(".pay_examination").click(function(){
 		$("#pay_exam_id").val($(this).attr("pay_exam_id"));
         $("#exam_disp_or_number").text($(this).attr("exam_disp_or_number"));
@@ -520,9 +550,9 @@ $(document).ready(function(){
 		"lengthChange": true,
 		"paging": true,
 		"searching": true,
-        "pageLength":10,
+        "pageLength":5,
 		"order": [],
 	});
     
-})
+});
 </script>
