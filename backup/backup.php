@@ -62,3 +62,25 @@
         </div>
     </div>
 </div>
+
+<td class='d-none'>
+    <span class='m-1 pay_examination' title='Pay Exam'
+            pay_exam_id='".$disp_examination[$i]['assessment_id']."'
+            exam_disp_or_number='".$disp_examination[$i]['or_number']."'
+            exam_tuition_fee='".$disp_examination[$i]['tuition_fee']."'
+            exam_balance='".$disp_examination[$i]['balance']."'
+            prelim_exam='".intval($disp_examination[$i]['prelim_exam'])."'
+            data-toggle='modal' data-target='#exam_payments_modal'>
+        <i class='fas fa-credit-card hvr-pop'></i>
+    </span>
+</td>
+
+<span class='m-1 pay_examination' title='Pay Exam'
+    pay_exam_id='".$disp_assessment[$i]['assessment_id']."'
+    exam_disp_or_number='".$disp_assessment[$i]['or_number']."'
+    exam_tuition_fee='".$disp_assessment[$i]['tuition_fee']."'
+    exam_balance='".$disp_assessment[$i]['balance']."'
+    prelim_exam='".intval($disp_assessment[$i]['prelim_exam'])."'
+    data-toggle='modal' data-target='#exam_payments_modal'>
+    <i class='fas fa-credit-card hvr-pop'></i>
+</span>

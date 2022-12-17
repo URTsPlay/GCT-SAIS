@@ -3,7 +3,8 @@
 <?php $page_title="GCT SAIS"; ?>
 <?php
     $get_profile=retrieve("SELECT * FROM students WHERE schoolid=?",array($_GET['user']));
-    $name=strtoupper($get_profile[0]['lastname'].", ".$get_profile[0]['firstname']." ".$get_profile[0]['middlename']);
+    $get_mi=substr($get_profile[0]['middlename'],0,1);
+    $name=strtoupper($get_profile[0]['lastname'].", ".$get_profile[0]['firstname']." ".$get_mi.".");
     $get_courses=retrieve("SELECT * FROM courses WHERE course_code=?",array($get_profile[0]['course']));
 
     if (isset($_POST['save_profile'])) {
@@ -48,7 +49,7 @@
         }
     }
 ?>
-<div class="card card-intro bg-primary">
+<div class="card card-intro bg-primary p-1 d-none">
     <div class="card-body white-text text-center">
         <div class="row d-flex justify-content-center">
             <div class="col-md-6">
@@ -61,8 +62,9 @@
 <!--Main Layout-->
 <main class="pt-4">
     <div class="container">
+        <h1 class="font-weight-bold h2">Student Information</h1>
         <div class="row mb-4">
-            <div class="col-md-6 mb-4">
+            <div class="col-md-8 mb-4">
                 <div class="card">
                     <div class="card-header">Personal Information</div>
                     <div class="card-body">
@@ -110,9 +112,30 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="card-header">Update Student Information</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form method="POST">
+                                    <label class="form-label" for="edit_year">Email</label>
+                                    <input class="form-control" type="email" name="edit_email" id="edit_email" value="<?php echo $get_profile[0]['email'] ?>">
+                                    
+                                    <label class="form-label" for="edit_year">Contact Number</label>
+                                    <input class="form-control" type="text" name="edit_contact_number" id="edit_contact_number" value="<?php echo $get_profile[0]['contact_number']; ?>">    
+
+                                    <label class="form-label" for="edit_course">Course</label>
+                                    <select class="form-control" name="edit_course" id="edit_course" value="<?php echo $get_profile[0]['course']; ?>">
+                                    </select>
+                                    
+                                    <label class="form-label" for="edit_year">Year</label>
+                                    <input class="form-control" type="number" name="edit_year" id="edit_year" value="<?php echo $get_profile[0]['year'] ?>">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-4">
+            <div class="col-md-4 mb-4">
                 <div class="card mb-4">
                     <div class="card-header">Password Change</div>
                     <div class="card-body">

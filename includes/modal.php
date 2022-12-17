@@ -1,3 +1,31 @@
+<div class="modal fade" id="view_subjects_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header primary-color text-white">
+        <h5 class="modal-title w-100 text-white">Subjects for <span id="fullname"></span></h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Subjects</th>
+            </tr>
+          </thead>
+          <tbody id="subject_list">
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-elegant btn-sm" data-dismiss="modal" title="Close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="modal fade" id="edit_student_modal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -173,7 +201,7 @@
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header primary-color text-white">
-        <h5 class="modal-title w-100 text-white">Proceed Now</h5>
+        <h5 class="modal-title w-100 text-white">Pay</h5>
         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -223,21 +251,20 @@
               <h6 class="ml-auto mr-auto">OR Number: <span id="exam_disp_or_number"></span></h6>
               <input type="text" name="exam_tuition_fee" id="exam_tuition_fee" hidden>
               <input type="text" name="exam_balance" id="exam_balance" hidden>
+              <input type="text" name="prelim_exam" id="prelim_exam" hidden>
               <div class="col-md-12">
                 <small class="grey-text mt-2">Exam Type</small>
                 <select class="form-control" name="exam_type" id="exam_type" required>
                   <option value=""></option>
-                  <option value="1">Prelim</option>
-                  <option value="2">Midterm</option>
-                  <option value="3">Pre-Final</option>
-                  <option value="4">Final</option>
+                  <option value="Prelim">Prelim</option>
+                  <option value="Midterm">Midterm</option>
+                  <option value="Pre-Final">Pre-Final</option>
+                  <option value="Final">Final</option>
                 </select>
               </div>
-              <div class="d-none">
-                <div class="col-md-12">
-                  <label for="prelim_total_pay">Amount To Pay for Prelim</label>
-                  <input class="prelim_total_pay_div ml-3" type="text" id="prelim_total_pay" name="prelim_total_pay" readonly>
-                </div>
+              <div class="col-md-12">
+                <label for="prelim_exam">Sub Total</label>
+                <input class="prelim_exam_div ml-3" type="text" id="prelim_exam" name="prelim_exam" readonly>
               </div>
               <div class="col-md-12">
                 <small class="grey-text mt-2">Amount</small>

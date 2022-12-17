@@ -26,6 +26,9 @@
 	<!-- <link href="<?php echo $short_url;?>assets/css/style.css" rel="stylesheet"> -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 	<link href="<?php echo $short_url;?>assets/css/sweetalert2.min.css" rel="stylesheet">
+	<style>
+		@import url('https://fonts.cdnfonts.com/css/cooper-black');
+	</style>
 </head>
-<body class="fixed-sn">
+<body class="fixed-sn" style="background-color: whitesmoke !important;">
 <!---Developed by Bright Moon-->
