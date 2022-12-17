@@ -12,10 +12,11 @@ if (isset($_POST['add_assessment'])) {
         $_POST['sub_total'],$_POST['total_fee'],date("Y-m-d"),date("Y-m-d h:i:s a"),date("Y-m-d h:i:s a")));
     
 
-    //https://stackoverflow.com/questions/1762231/using-implode-to-combine-multiple-select
-    if (isset($_REQUEST['getSubjects'])) {
-        $subjects = implode(",",$_REQUEST['getSubjects']);
-        manage("INSERT INTO assessment_subject(assessment_id,subjects_list) VALUES(?,?)",array($pdo->lastInsertId(),$subjects));
+    //https://www.geeksforgeeks.org/how-to-get-multiple-selected-values-of-select-box-in-php/
+    if (isset($_POST['subjects'])) {
+        foreach ($_POST['subjects'] as $subjects) {
+            manage("INSERT INTO assessment_subject(student_id,subjects_list) VALUES(?,?)",array($get_school_id[0]['id'],$subjects));
+        }
     }
 
     manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
@@ -86,19 +87,30 @@ if (isset($_POST['save_payment'])) {
     </script>";
 }
 
-if (isset($_POST['pay_exam'])) {
+if (isset($_POST['save_exam_pay'])) {
 
+    $get_school_id = retrieve("SELECT * FROM students WHERE id=?",array($_POST['edit_assessment_student_id']));
     $get_tuition = retrieve("SELECT * FROM assessment WHERE id=?",array($_POST['pay_exam_id']));
-    $set_tuition = $get_tuiton[0]['tuition_fee'] / 4;
-    $get_previous_sub = $get_tuition[0]['subtotal'];
+    $set_tuition = $_POST['exam_tuition_fee'] / 4;
+    $balance = $_POST['exam_balance'];
 
     if ($_POST['exam_type'] == 1) {
+        $exam_total = $balance + $set_tuition;
+    } else if($_POST['exam_type'] == 2){
+        $exam_total = $set_tuition;
+    } else if($_POST['exam_type'] == 3){
+        $exam_total = $set_tuition;
+    } else if($_POST['exam_type'] == 4){
         $exam_total = $set_tuition;
     }
 
-    manage("INSERT INTO exam_payments(exam_type,exam_total,amount_paid,date_paid,created_at,update_at)
-        VALUES(?,?,?,?,?)",array($_POST['exam_type'], $exam_total, $_POST['exam_payment_amount'],
-        date("Y-m-d"), date("Y-m-d h:i:s a"),date("Y-m-d h:i:s a")));
+    // manage("INSERT INTO exam_payments(exam_type,exam_total,amount_paid,date_paid,created_at,update_at)
+    //     VALUES(?,?,?,?,?,?)",array($_POST['exam_type'], $exam_total, $_POST['exam_payment_amount'],
+    //     date("Y-m-d"), date("Y-m-d h:i:s a"),date("Y-m-d h:i:s a")));
+
+    manage("INSERT INTO payments(assessment_id,total,amount_paid,balance,date_paid,created_at)
+    VALUES(?,?,?,?,?,?)",array($_POST['pay_exam_id'],$exam_total, $_POST['exam_payment_amount'],
+    $balance,date("Y-m-d"),date("Y-m-d h:i:s a")));
 
     echo "<script type='module'>
         Swal.fire('Success','Payment Exam Paid','success');
@@ -116,7 +128,7 @@ if (isset($_POST['pay_exam'])) {
   color: black; background-color: #1E88E5; font-family: "Courier New"; font-weight: bold;
 }
 
-.update_total_div,.up_date_sub_total_div,.prelim_total_pay_div {
+.update_total_div,.up_date_sub_total_div,.prelim_exam_div {
   height: 40px; width: 186px; text-align: center; font-size: 28px;
   color: black; background-color: #1E88E5; font-family: "Courier New"; font-weight: bold;
 }
@@ -126,7 +138,7 @@ if (isset($_POST['pay_exam'])) {
     <h1 class="mr-auto ml-auto">Student Ledger and Assessment</h1>
 	<div class="col-md-12 mt-2">
 		<div class="row">
-			<div class="col-md-5 mb-2">
+			<div class="col-md-4 mb-2">
 				<div class="card">
 					<div class="card-header p-2 bg-primary text-white">
 						Add Assessment
@@ -164,13 +176,13 @@ if (isset($_POST['pay_exam'])) {
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <div class="md-form">
                                                 <input class="form-control" type="number" name="year" id="year" required>
                                                 <label for="year">Year</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <div class="md-form">
                                                 <select class="mdb-select md-form" name="particular" id="particular">
                                                     <option value="">Select Particular</option>
@@ -179,7 +191,7 @@ if (isset($_POST['pay_exam'])) {
                                                 </select>
                                             </div>  
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <div class="md-form">
                                                 <select class="mdb-select md-form" name="school_year" id="school_year">
                                                     <option value="">Select School Year</option>
@@ -192,16 +204,16 @@ if (isset($_POST['pay_exam'])) {
                                                 </select>
                                             </div>  
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <div class="md-form">
-                                                <select class="mdb-select" name="subjects" id="subjects">
+                                                <select class="mdb-select" name="subjects[]" id="subjects" multiple searchable="Search...">
                                                     <option value="">Select Subjects</option>
-                                                    <!-- <?php
-                                                        $getSubjects=retrieve("SELECT * FROM curriculum",array());
+                                                    <?php
+                                                        $getSubjects=retrieve("SELECT * FROM subjects",array());
                                                         for ($i=0; $i < COUNT($getSubjects); $i++) { 
                                                             echo "<option value='".$getSubjects[$i]['id']."'>".$getSubjects[$i]['subject_code']."</option>";
                                                         }
-                                                    ?> -->
+                                                    ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -253,7 +265,7 @@ if (isset($_POST['pay_exam'])) {
                     </div>
 				</div>
 			</div>
-            <div class="col-md-7 mb-2">
+            <div class="col-md-8 mb-2">
 				<div class="row">
                     <div class="col-md-12 mb-2">
                         <div class="card">
@@ -267,7 +279,7 @@ if (isset($_POST['pay_exam'])) {
                                             <thead>
                                                 <tr>
                                                     <?php
-                                                        $stud_head=explode(",","No,OR Number,Name,Subjects,Registration Fee,NSTP Fee,Lab Fee,Tuition Fee,School Year,Particular,Subtotal,Total,Action");
+                                                        $stud_head=explode(",","No,OR Number,Name,Registration Fee,NSTP Fee,Lab Fee,Tuition Fee,School Year,Particular,Subtotal,Total,Action");
                                                         foreach($stud_head as $stud_val)
                                                         {
                                                             echo "<th>".$stud_val."</th>";
@@ -289,12 +301,11 @@ if (isset($_POST['pay_exam'])) {
                                                     assessment.total AS total FROM assessment INNER JOIN students ON students.id=assessment.student_id",array());
                                                     for ($i=0; $i < count($disp_assessment); $i++) { 
                                                         $get_payments=retrieve("SELECT * FROM payments WHERE assessment_id=?",array($disp_assessment[$i]['assessment_id']));
-                                                        $get_subjects = retrieve("SELECT * FROM assessment_subject WHERE assessment_id=?",array($disp_assessment[$i]['assessment_id']));
+                                                        $get_subjects = retrieve("SELECT * FROM assessment_subject WHERE student_id=?",array($disp_assessment[$i]['student_id']));
                                                     echo "<tr>  
                                                             <td>".$disp_assessment[$i]['assessment_id']."</td>
                                                             <td>".$disp_assessment[$i]['or_number']."</td>
                                                             <td>".$disp_assessment[$i]['fullname']."</td>
-                                                            <td>".$get_subjects[0]['subjects_list']."</td>
                                                             <td>".$disp_assessment[$i]['reg_gen_fee']."</td>
                                                             <td>".$disp_assessment[$i]['nstp_fee']."</td>
                                                             <td>".$disp_assessment[$i]['lab_fee']."</td>
@@ -304,6 +315,11 @@ if (isset($_POST['pay_exam'])) {
                                                             <td>".$disp_assessment[$i]['subtotal']."</td>
                                                             <td>".$disp_assessment[$i]['total']."</td>
                                                             <td>
+                                                                <span class='m-1 view_subjects' title='View Subjects'
+                                                                    fullname='".$disp_assessment[$i]['fullname']."'
+                                                                    data-toggle='modal' data-target='#view_subjects_modal'>
+                                                                    <i class='fas fa-eye hvr-pop'></i>
+                                                                </span>
                                                                 <span class='m-1 edit_assessment' title='Edit'
                                                                         edit_assessment_id='".$disp_assessment[$i]['assessment_id']."' 
                                                                         edit_assessment_student_id='".$disp_assessment[$i]['student_id']."'
@@ -320,15 +336,64 @@ if (isset($_POST['pay_exam'])) {
                                                                         data-toggle='modal' data-target='#payments_modal'>
                                                                     <i class='fas fa-credit-card hvr-pop'></i>
                                                                 </span>
-                                                                <span class='m-1 pay_examination' title='Pay Exam'
-                                                                        pay_exam_id='".$disp_assessment[$i]['assessment_id']."'
-                                                                        exam_disp_or_number='".$disp_assessment[$i]['or_number']."'
-                                                                        exam_tuition_fee='".$disp_assessment[$i]['tuition_fee']."'
-                                                                        exam_balance='".$get_payments[0]['balance']."'
-                                                                        data-toggle='modal' data-target='#exam_payments_modal'>
-                                                                    <i class='fas fa-coins hvr-pop'></i>
-                                                                </span>
+                                                                
                                                             </td>
+                                                        </tr>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <div class="card">
+                            <div class="card-header p-2 bg-primary text-white">
+                                Manage Examination
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-striped table-bordered table-sm w-100 text-center" cellspacing="0" cellpadding="0" id="tblExamination">
+                                            <thead>
+                                                <tr>
+                                                    <?php
+                                                        $stud_head=explode(",","No,OR Number,Name,Tuition,Balance,Prelim,Midterm/Pre-Final/Final");
+                                                        foreach($stud_head as $stud_val)
+                                                        {
+                                                            echo "<th>".$stud_val."</th>";
+                                                        }
+                                                    ?>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                    $disp_examination = retrieve("SELECT
+                                                    assessment.student_id AS student_id,
+                                                    assessment.id AS assessment_id, 
+                                                    assessment.or_number AS or_number,
+                                                    CONCAT_WS(' ', students.firstname, students.lastname) fullname,
+                                                    assessment.subtotal AS subtotal,
+                                                    assessment.tuition_fee AS tuition_fee,
+                                                    payments.balance AS balance,
+                                                    (payments.balance + (assessment.tuition_fee / 4)) AS prelim_exam,
+                                                    (assessment.tuition_fee / 4) AS mid_final
+                                                    FROM payments 
+                                                    INNER JOIN assessment ON assessment.id=payments.assessment_id
+                                                    INNER JOIN students ON students.id=assessment.student_id",array());
+                                                    for ($i=0; $i < count($disp_examination); $i++) { 
+                                                        $get_payments=retrieve("SELECT * FROM payments WHERE assessment_id=?",array($disp_examination[$i]['assessment_id']));
+                                                        $get_subjects = retrieve("SELECT * FROM assessment_subject WHERE assessment_id=?",array($disp_examination[$i]['assessment_id']));
+                                                    echo "<tr>  
+                                                            <td>".$disp_examination[$i]['assessment_id']."</td>
+                                                            <td>".$disp_examination[$i]['or_number']."</td>
+                                                            <td>".$disp_examination[$i]['fullname']."</td>
+                                                            <td>".$disp_examination[$i]['tuition_fee']."</td>
+                                                            <td>".$disp_examination[$i]['balance']."</td>
+                                                            <td>".intval($disp_examination[$i]['prelim_exam'])."</td>
+                                                            <td>".intval($disp_examination[$i]['mid_final'])."</td>
                                                         </tr>";
                                                     }
                                                 ?>
@@ -384,19 +449,6 @@ if (isset($_POST['pay_exam'])) {
                                                     <td>".$disp_payments[$i]['amount_paid']."</td>
                                                     <td>".$disp_payments[$i]['balance']."</td>
                                                     <td>".$disp_payments[$i]['date_paid']."</td>
-                                                    <td class='d-none'>
-                                                        <span class='m-1 edit_payments d-none' title='Edit'
-                                                                edit_payments_id='".$disp_payments[$i]['payment_id']."'
-                                                                data-toggle='modal' data-target='#edit_payments_modal'>
-                                                            <i class='fas fa-pencil hvr-pop'></i>
-                                                        </span>
-                                                        <span class='m-1 pay_payments d-none' title='Pay Now'
-                                                                pay_payments_id='".$disp_payments[$i]['payment_id']."'
-                                                                exam_disp_or_number='".$disp_payments[$i]['or_number']."'
-                                                                data-toggle='modal' data-target='#payments_modal'>
-                                                            <i class='fas fa-credit-card hvr-pop'></i>
-                                                        </span>
-                                                    </td>
                                                 </tr>";
                                             }
                                         ?>
@@ -420,7 +472,7 @@ if (isset($_POST['pay_exam'])) {
 <script>
 $(document).ready(function(){
 
-    // $('.mdb-select').materialSelect();
+    $('.mdb-select').materialSelect();
 
     var stud_year = $("#year");
     var stud_course = $("#course");
@@ -433,12 +485,12 @@ $(document).ready(function(){
         })
     });
 
-    var curriculum_url = "data/curriculum.json";
-    $.getJSON(curriculum_url, function (data) {
-        $.each(data, function (index, value) {
-            $('#subjects').append('<option value="' + value.id + '">' + value.subject_code + '</option>');
-        })
-    });
+    // var curriculum_url = "data/curriculum.json";
+    // $.getJSON(curriculum_url, function (data) {
+    //     $.each(data, function (index, value) {
+    //         $('#subjects').append('<option value="' + value.id + '">' + value.subject_code + '</option>');
+    //     })
+    // });
 
 
     $("#reg_gen_fee").keyup(function(){
@@ -525,16 +577,35 @@ $(document).ready(function(){
     $(".pay_examination").click(function(){
 		$("#pay_exam_id").val($(this).attr("pay_exam_id"));
         $("#exam_disp_or_number").text($(this).attr("exam_disp_or_number"));
+        $("#prelim_exam").val($(this).attr("prelim_exam"));
+        $("#exam_tuition_fee").val($(this).attr("exam_tuition_fee"));
+        $("#exam_balance").val($(this).attr("exam_balance"));
 
-		var balance = parseInt($("#exam_balance").val($(this).attr("exam_balance")));
-		var tuition = parseInt($("#exam_tuition_fee").val($(this).attr("exam_tuition_fee")));
+		// var balance = parseInt($("#exam_balance").val($(this).attr("exam_balance")));
+		// var tuition = parseInt($("#exam_tuition_fee").val($(this).attr("exam_tuition_fee")));
 		
-		console.log(balance);
-		$("#prelim_total_pay").val(balance + tuition);
+		// console.log(balance);
+		// $("#prelim_total_pay").val(balance + tuition);
+
 		$("#exam_payments_modal").modal("show");
 	});
 
+    $(".view_subjects").click(function(){
+        $("#fullname").text($(this).attr("fullname"));
+		$("#view_subjects_modal").modal("show");
+	});
+
     $("#tblassessment").DataTable({
+		"scrollX": true,
+		"info": true,
+		"lengthChange": true,
+		"paging": true,
+		"searching": true,
+        "pageLength":10,
+		"order": [],
+	});
+
+    $("#tblExamination").DataTable({
 		"scrollX": true,
 		"info": true,
 		"lengthChange": true,
@@ -550,7 +621,7 @@ $(document).ready(function(){
 		"lengthChange": true,
 		"paging": true,
 		"searching": true,
-        "pageLength":5,
+        "pageLength":10,
 		"order": [],
 	});
     

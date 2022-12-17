@@ -7,7 +7,7 @@
         <div class="col-md-6">
             <h6 class="h6 text-uppercase font-weight-bold" style="font-size: 24px;">Ledger of School Accounts</h6>
             <h6 style="font-size:20px;" class="font-weight-bold h6"><?php echo $student_fullname; ?></h6>
-            <span>School ID No. <?php echo $student_schoolid; ?></span>
+            <span>Student ID No. <?php echo $student_schoolid; ?></span>
         </div>
         <div class="col-md-6">
             <h6 class="h6 text-uppercase font-weight-bold" style="font-size: 24px;">ACCOUNT BALANCE</h6>
@@ -15,7 +15,7 @@
             <span>COURSE AND YEAR</span>
         </div>
     </div>
-    <table class="table table-striped table-hover table-sm mt-5 ml-0 mr-0 mb-10">
+    <table class="table table-striped table-hover table-sm mt-5 ml-0 mr-0 mb-10 d-none">
         <thead></thead>
         <tbody>
             <tr>
@@ -23,7 +23,7 @@
                 <td class="font-weight-bold"><?php echo $student_fullname; ?></td>
             </tr>
             <tr>
-                <td>Student School ID</td>
+                <td>Student ID no.</td>
                 <td class="font-weight-bold"><?php echo $student_schoolid; ?></td>
             </tr>
             <tr>
@@ -41,7 +41,7 @@
     </table>
     <div class="row">
         <div class="col-md-12">
-            <h6 class="font-weight-bold pb-5">ACCOUNT TRANSACTION DETAILS</h6>
+            <h5 class="font-weight-bold pb-5 mt-5">ACCOUNT TRANSACTION DETAILS</h5>
             <table class="table table-striped table-hover table-sm w-100">
                 <thead>
                     <tr>

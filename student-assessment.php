@@ -59,12 +59,29 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        $disp_subject=retrieve("SELECT 
-                                            assessment_subject.subjects_list AS subjects_list,
-                                            assessment.school_id AS school_id
-                                            FROM assessment_subject 
-                                            INNER JOIN assessment ON assessment_subject.assessment_id=assessment.id
-                                            WHERE assessment.school_id=?",array($student_schoolid)); 
+                                        $disp_subject=retrieve("SELECT
+                                        assessment_subject.subjects_list AS subjects_list,
+                                        subjects.subject_code AS subject_code,
+                                        subjects.lec_hours AS lec_hours,
+                                        subjects.lab_hours AS lab_hours,
+                                        subjects.units AS units,
+                                        assessment.student_id AS student_id
+                                    FROM
+                                        assessment_subject
+                                    INNER JOIN subjects ON assessment_subject.subjects_list = subjects.id
+                                    INNER JOIN students ON assessment_subject.student_id = students.id
+                                    INNER JOIN assessment ON assessment_subject.student_id = assessment.student_id
+                                    WHERE
+                                        students.id=?",array($student_id));
+
+                                        for ($i=0; $i < COUNT($disp_subject); $i++) { 
+                                            echo "<tr>
+                                                <td>".$disp_subject[$i]['subject_code']."</td>
+                                                <td>".$disp_subject[$i]['lec_hours']."</td>
+                                                <td>".$disp_subject[$i]['lab_hours']."</td>
+                                                <td>".$disp_subject[$i]['units']."</td>
+                                            </tr>";
+                                        }
                                     ?>
                                 </tbody>
                             </table>
@@ -133,7 +150,7 @@
                                             WHERE assessment.school_id=?
                                         ",array($student_schoolid));
                                         for ($i=0; $i < COUNT($get_exam_amount); $i++) { 
-                                            $prelim_exam=$get_exam_amount[$i]['tuition_fee'] + $get_exam_amount[$i]['balance'];
+                                            $prelim_exam=$get_exam_amount[$i]['tuition_fee'] / 4 + $get_exam_amount[$i]['balance'];
                                             $midterm=$get_exam_amount[$i]['tuition_fee'] / 4;
                                             $pre_final=$get_exam_amount[$i]['tuition_fee'] / 4;
                                             $final=$get_exam_amount[$i]['tuition_fee'] / 4;
@@ -156,7 +173,7 @@
         </div>
     </div>
 </div>
-<div class="text-center bg-primary p-4 mt-5 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
+<div class="text-center bg-primary p-4 mt-5 fixe-bottom white-text" style="background-color: rgba(0, 0, 0, 0.05);">
     Copyright &copy; 2022
     <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a><br>
     <span>Developed by Project69</span>

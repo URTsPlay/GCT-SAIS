@@ -5,7 +5,7 @@ if ($admin_type==1) {
 ?>
 <nav class="mb-1 navbar navbar-expand-lg navbar-dark warning-color">
   <img src="./assets/img/gct_logo.png" height="50" alt="mdb logo">
-  <a class="navbar-brand" href="#">
+  <a class="navbar-brand" href="#" style="font-family: 'Cooper Black', sans-serif;'">
       Garcia College of Technology
     </a>
     <button class="navbar-toggler first-button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent20"
@@ -33,7 +33,7 @@ if ($student_type==2) {
 ?>
 <nav class="mb-1 navbar navbar-expand-lg navbar-dark warning-color">
   <img src="./assets/img/gct_logo.png" height="50" alt="mdb logo">
-  <a class="navbar-brand" href="#">
+  <a class="navbar-brand" href="#" style="font-family: 'Cooper Black', sans-serif;'">
       Garcia College of Technology
     </a>
   <button class="navbar-toggler first-button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent20"
