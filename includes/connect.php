@@ -10,7 +10,7 @@ $pdo = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
 date_default_timezone_set("Asia/Manila");
- error_reporting(0);
+error_reporting(0);
 
 // functions to be used for database
 // 

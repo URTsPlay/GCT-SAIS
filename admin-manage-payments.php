@@ -348,7 +348,7 @@ if (isset($_POST['save_exam_pay'])) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 mb-2">
+                    <div class="col-md-12 mb-2 d-none">
                         <div class="card">
                             <div class="card-header p-2 bg-primary text-white">
                                 Manage Examination
@@ -420,7 +420,7 @@ if (isset($_POST['save_exam_pay'])) {
                                     <thead>
                                         <tr>
                                             <?php
-                                                $stud_head=explode(",","ID,OR Number,Name,Previous Balance,Credit,Current Balance,Date Paid");
+                                                $stud_head=explode(",","No,OR Number,Name,Tuition,Balance,Prelim,Midterm/Pre-Final/Final");
                                                 foreach($stud_head as $stud_val)
                                                 {
                                                     echo "<th>".$stud_val."</th>";
@@ -430,26 +430,31 @@ if (isset($_POST['save_exam_pay'])) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                            $disp_payments = retrieve("SELECT payments.id as payment_id,
+                                            $disp_payments = retrieve("SELECT
+                                            assessment.student_id AS student_id,
+                                            assessment.id AS assessment_id, 
                                             assessment.or_number AS or_number,
-                                            CONCAT_WS(' ', students.firstname, students.lastname) stud_name,
-                                            payments.total AS total,
-                                            payments.amount_paid AS amount_paid,
+                                            CONCAT_WS(' ', students.firstname, students.lastname) fullname,
+                                            assessment.subtotal AS subtotal,
+                                            assessment.tuition_fee AS tuition_fee,
                                             payments.balance AS balance,
-                                            payments.date_paid AS date_paid
+                                            (payments.balance + (assessment.tuition_fee / 4)) AS prelim_exam,
+                                            (assessment.tuition_fee / 4) AS mid_final
                                             FROM payments 
-                                            INNER JOIN assessment ON assessment.id=payments.assessment_id 
+                                            INNER JOIN assessment ON assessment.id=payments.assessment_id
                                             INNER JOIN students ON students.id=assessment.student_id",array());
                                             for ($i=0; $i < count($disp_payments); $i++) { 
-                                            echo "<tr>
-                                                    <td>".$disp_payments[$i]['payment_id']."</td>
-                                                    <td>".$disp_payments[$i]['or_number']."</td>
-                                                    <td>".$disp_payments[$i]['stud_name']."</td>
-                                                    <td>".$disp_payments[$i]['total']."</td>
-                                                    <td>".$disp_payments[$i]['amount_paid']."</td>
-                                                    <td>".$disp_payments[$i]['balance']."</td>
-                                                    <td>".$disp_payments[$i]['date_paid']."</td>
-                                                </tr>";
+                                                $get_payments=retrieve("SELECT * FROM payments WHERE assessment_id=?",array($disp_payments[$i]['assessment_id']));
+                                                $get_subjects = retrieve("SELECT * FROM assessment_subject WHERE assessment_id=?",array($disp_payments[$i]['assessment_id']));
+                                                echo "<tr>  
+                                                        <td>".$disp_payments[$i]['assessment_id']."</td>
+                                                        <td>".$disp_payments[$i]['or_number']."</td>
+                                                        <td>".$disp_payments[$i]['fullname']."</td>
+                                                        <td>".$disp_payments[$i]['tuition_fee']."</td>
+                                                        <td>".$disp_payments[$i]['balance']."</td>
+                                                        <td>".intval($disp_payments[$i]['prelim_exam'])."</td>
+                                                        <td>".intval($disp_payments[$i]['mid_final'])."</td>
+                                                    </tr>";
                                             }
                                         ?>
                                     </tbody>
