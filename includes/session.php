@@ -29,6 +29,7 @@ $student_username=$get_login_student[0]['username'];
 $student_password=$get_login_student[0]['password'];
 
 //admin variables
+$admin_id=$get_login_admin[0]['id'];
 $admin_name=$get_login_admin[0]['firstname']." ".$get_login_admin[0]['lastname'];
 $admin_fullname = $get_login_admin[0]['firstname']." ".$get_login_admin[0]['middlename']." ".$get_login_admin[0]['lastname'];
 $admin_email=$get_login_admin[0]['email'];

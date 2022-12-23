@@ -4,10 +4,17 @@
 <?php
 
 if (isset($_POST['add_admin'])) {
+
     manage("INSERT INTO admin(lastname,firstname,middlename,position,email,contact_number,created_at)
     VALUES(?,?,?,?,?,?,?)",array($_POST['lastname'],$_POST['firstname'],
     $_POST['middlename'],$_POST['position'],$_POST['email'],$_POST['contact_number'],
     date("Y-m-d h:i:s a")));
+
+    $username=strtolower($_POST['firstname']);
+    $username_final=str_replace(" ","_",$username);
+
+    manage("INSERT INTO login_credentials(user_id,username,password,type,status,created_at,updated_at) 
+                VALUES(?,?,?,?,?,?,?)",array($pdo->lastInsertId(),$username_final,"123456",1,1,date("Y-m-d H:i:s a"),date("Y-m-d H:i:s a")));
     
     manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
     array($admin_username,"Admin","Manage Personnel","ADD",
@@ -15,8 +22,30 @@ if (isset($_POST['add_admin'])) {
             <p>Add Personnel </p>
             <p>
                 Name: ".$_POST['firstname']." ".$_POST['middlename']." ".$_POST['lastname']."<br>
-                Position: ".$_POST['position']."
+                Position: ".$_POST['position']."<br>
+                Username: ".$username."
             </p>
+        </details>",date("Y-m-d h:i:s a")));
+    echo "<script type='module'>
+        Swal.fire('Success','Added Courses','success');
+    </script>";
+}
+
+if (isset($_POST['save_user_control'])) {
+    
+    manage("INSERT INTO user_control(admin_id,generate_assessment,manage_students,add_personnel) VALUES(?,?,?,?)",
+    array($_POST['edit_user_control_id'],$_POST['generate_assessment'],$_POST['manage_students'],$_POST['add_personnel']));
+
+    manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
+    array($admin_username,"Admin","Manage Personnel","ADD",
+        "<details>
+            <p>Add User Control </p>
+            <p>
+                Name: ".$_POST['fullname']."<br>
+                Generate Assessment: ".$_POST['generate_assessment']."<br>
+                Manage Students: ".$_POST['manage_students']."<br>
+                Add Personnel: ".$_POST['add_personnel']."
+            </p>                   
         </details>",date("Y-m-d h:i:s a")));
     echo "<script type='module'>
         Swal.fire('Success','Added Courses','success');
@@ -84,7 +113,7 @@ if (isset($_POST['add_admin'])) {
                                     <thead>
                                         <tr>
                                             <?php
-                                                $stud_head=explode(",","No,Last Name,First Name,Middle Name,Position,Email,Contact Number");
+                                                $stud_head=explode(",","No,Last Name,First Name,Middle Name,Position,Email,Contact Number,Actions");
                                                 foreach($stud_head as $stud_val)
                                                 {
                                                     echo "<th>".$stud_val."</th>";
@@ -96,6 +125,7 @@ if (isset($_POST['add_admin'])) {
                                         <?php
                                             $disp_admin = retrieve("SELECT * FROM admin",array());
                                             for ($i=0; $i < count($disp_admin); $i++) { 
+                                                $name=$disp_admin[$i]['firstname']." ".$disp_admin[$i]['lastname'];
                                             echo "<tr>
                                                     <td>".$disp_admin[$i]['id']."</td>
                                                     <td>".$disp_admin[$i]['lastname']."</td>
@@ -104,6 +134,15 @@ if (isset($_POST['add_admin'])) {
                                                     <td>".$disp_admin[$i]['position']."</td>
                                                     <td>".$disp_admin[$i]['email']."</td>
                                                     <td>".$disp_admin[$i]['contact_number']."</td>
+                                                    <td>
+                                                        <span class='m-1 edit_user_control'
+                                                            edit_user_control_id='".$disp_admin[$i]['id']."'
+                                                            fullname='".$name."'
+                                                            admin_name='".$name."'
+                                                            data-toggle='modal' data-target='#edit_user_control_modal'>
+                                                            <i class='fas fa-universal-access hvr-pop'></i>
+                                                        </span>
+                                                    </td>
                                                 </tr>";
                                             }
                                         ?>
@@ -136,11 +175,16 @@ $(document).ready(function(){
 		"order": [],
 	});
 
-    $(".edit_admin").click(function(){
+    $(".edit_user_control").click(function(){
 		$("#edit_admin_id").val($(this).attr("edit_admin_id"));
-		$("#edit_admin_code").val($(this).attr("edit_admin_code"));
-		$("#edit_admin_name").val($(this).attr("edit_admin_name"));
+        $("#fullname").val($(this).attr("fullname"));
+        $("#admin_name").text($(this).attr("admin_name"));
 		$("#edit_admin_modal").modal("show");
+	});
+
+    $(".edit_admin").click(function(){
+		$("#edit_user_control_id").val($(this).attr("edit_user_control_id"));
+		$("#edit_user_control_modal").modal("show");
 	});
 })
 </script>

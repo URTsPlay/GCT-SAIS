@@ -309,3 +309,48 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="edit_user_control_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header primary-color text-white">
+        <h5 class="modal-title w-100 text-white">Edit User Control</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+            <div class="row mt-3">
+              <input type="text" name="edit_user_control_id" id="edit_user_control_id" hidden>
+              <input type="text" name="fullname" id="fullname" hidden>
+              <h6 class="mr-auto ml-auto">Name: <span id="admin_name"></span></h6>
+              <div class="col-md-12">
+                 <?php
+                    $get_user_control=array("Generate Assessment"=>"generate_assessment","Manage Students"=>"manage_students","Add Personnel"=>"add_personnel");
+                    foreach ($get_user_control as $uc_key => $uc_value) {
+                        echo "
+                          <div class='md-form row'>
+                            <label for='".$uc_value."'>".$uc_key."</label>
+                            <div class='col-sm-10'>
+                              <select class='mdb-select' name='".$uc_value."' id='".$uc_value."'>
+                                <option value=''></option>
+                                <option value='1'>Yes</option>
+                                <option value='0'>No</option>
+                              </select>
+                            </div>
+                          </div>";
+                      }
+                 ?>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" name="save_user_control">Save</button>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-elegant btn-sm" data-dismiss="modal" title="Close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
