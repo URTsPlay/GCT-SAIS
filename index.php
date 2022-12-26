@@ -47,7 +47,7 @@ body,html{
                                                 <div class="md-form">
                                                     <i class="fas fa-user-circle white-text prefix"></i>
                                                     <input class="form-control form-control-lg rounded-0 text-white" type="text" name="username" id="username" required>
-                                                    <label class="text-white" for="password">School ID Number</label>
+                                                    <label class="text-white" for="password">Student ID</label>
                                                 </div>
                                                 <div class="md-form">
                                                     <i class="fas fa-lock white-text prefix"></i>

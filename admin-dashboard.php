@@ -6,10 +6,13 @@
 }
 </style>
 <?php $page_title="Admin Dashboard"; ?>
+<?php
+    $get_user_control=retrieve("SELECT * FROM user_control WHERE id=?",array($admin_id));
+?>
 <div class="container mt-3">
     <div class="page-header">
         <h1 class="text-center">Assessor's Office</h1>
-        <h1 class="d-none"><?php echo $admin_name; ?></h1>
+        <h4><?php echo $admin_name; ?></h4>
         <hr>
 	</div>
     <div class="row mx-auto mt-3">
@@ -25,7 +28,19 @@
                     </div>
                     <div class='p-2'>         
                         <div class='card-body'>
-                            <h4 class='card-title'><a class='black-text' href="admin-manage-students.php">Manage Students</a></h4>
+                            <h4 class='card-title'>
+                                <?php
+                                    if ($get_user_control[0]['manage_students'] == 1) {
+                                ?>
+                                    <a class='black-text' href="admin-manage-students.php">Manage Students</a>
+                                <?php
+                                    } else {
+                                ?>
+                                <a class='black-text' onclick="showErrorMessage()">Manage Students</a>
+                                <?php
+                                    }
+                                ?>
+                            </h4>
                         </div>  
                     </div>
                 </div>
@@ -67,7 +82,19 @@
                     </div>
                     <div class='p-2'>         
                         <div class='card-body'>
-                            <h4 class='card-title'><a class='black-text' href="admin-manage-payments.php">Manage Student Ledger</a></h4>
+                            <h4 class='card-title'>
+                                <?php
+                                    if ($get_user_control[0]['generate_assessment'] == 1) {
+                                ?>
+                                   <a class='black-text' href="admin-manage-payments.php">Manage Student Ledger</a>
+                                <?php
+                                    } else {
+                                ?>
+                                <a class='black-text' onclick="showErrorMessage();">Manage Student Ledger</a>
+                                <?php
+                                    }
+                                ?>
+                            </h4>
                         </div>  
                     </div>
                 </div>
@@ -95,7 +122,45 @@
                     </div>
                     <div class='p-2'>         
                         <div class='card-body'>
-                            <h4 class='card-title'><a class='black-text' href="admin-manage-personnel.php">Manage Personnel</a></h4>
+                            <h4 class='card-title'>
+                                <?php
+                                    if ($get_user_control[0]['add_personnel'] == 1) {
+                                ?>
+                                   <a class='black-text' href="admin-manage-personnel.php">Manage Personnel</a>
+                                <?php
+                                    } else {
+                                ?>
+                                <a class='black-text' onclick="showErrorMessage();">Manage Personnel</a>
+                                <?php
+                                    }
+                                ?>
+                            </h4>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-4 mt-2'>
+            <div class='card text-center'>
+                <div class='d-flex flex-row'>
+                    <div class='p-2'>
+                        <span class='fas fa-user-lock' style='font-size: 7rem;'></span>
+                    </div>
+                    <div class='p-2'>         
+                        <div class='card-body'>
+                            <h4 class='card-title'>
+                                <?php
+                                    if ($get_user_control[0]['manage_user_control'] == 1) {
+                                ?>
+                                   <a class='black-text' href="admin-manage-user-control.php">Manage User Control</a>
+                                <?php
+                                    } else {
+                                ?>
+                                <a class='black-text' onclick="showErrorMessage();">Manage User Control</a>
+                                <?php
+                                    }
+                                ?>
+                            </h4>
                         </div>  
                     </div>
                 </div>
@@ -109,7 +174,19 @@
                     </div>
                     <div class='p-2'>         
                         <div class='card-body'>
-                            <h4 class='card-title'><a class='black-text' href="system-logs.php">System Logs</a></h4>
+                            <h4 class='card-title'>
+                                <?php
+                                    if ($get_user_control[0]['manage_user_control'] == 1) {
+                                ?>
+                                   <a class='black-text' href="system-logs.php">System Logs</a>
+                                <?php
+                                    } else {
+                                ?>
+                                <a class='black-text' onclick="showErrorMessage();">System Logs</a>
+                                <?php
+                                    }
+                                ?>
+                            </h4>
                         </div>  
                     </div>
                 </div>
@@ -123,3 +200,8 @@
     <span>Developed by Project69</span>
 </div>
 <?php include('includes/footer.php'); ?>
+<script>
+    function showErrorMessage(){
+        Swal.fire('Error','Access Denied','error');
+    }
+</script>

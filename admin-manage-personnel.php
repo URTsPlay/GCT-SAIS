@@ -27,28 +27,7 @@ if (isset($_POST['add_admin'])) {
             </p>
         </details>",date("Y-m-d h:i:s a")));
     echo "<script type='module'>
-        Swal.fire('Success','Added Courses','success');
-    </script>";
-}
-
-if (isset($_POST['save_user_control'])) {
-    
-    manage("INSERT INTO user_control(admin_id,generate_assessment,manage_students,add_personnel) VALUES(?,?,?,?)",
-    array($_POST['edit_user_control_id'],$_POST['generate_assessment'],$_POST['manage_students'],$_POST['add_personnel']));
-
-    manage("INSERT INTO system_logs(user_id,type,page,action,details,date) VALUES(?,?,?,?,?,?)",
-    array($admin_username,"Admin","Manage Personnel","ADD",
-        "<details>
-            <p>Add User Control </p>
-            <p>
-                Name: ".$_POST['fullname']."<br>
-                Generate Assessment: ".$_POST['generate_assessment']."<br>
-                Manage Students: ".$_POST['manage_students']."<br>
-                Add Personnel: ".$_POST['add_personnel']."
-            </p>                   
-        </details>",date("Y-m-d h:i:s a")));
-    echo "<script type='module'>
-        Swal.fire('Success','Added Courses','success');
+        Swal.fire('Success','Added Personnel','success');
     </script>";
 }
 ?>
@@ -113,7 +92,7 @@ if (isset($_POST['save_user_control'])) {
                                     <thead>
                                         <tr>
                                             <?php
-                                                $stud_head=explode(",","No,Last Name,First Name,Middle Name,Position,Email,Contact Number,Actions");
+                                                $stud_head=explode(",","Last Name,First Name,Middle Name,Position,Email,Contact Number,Actions");
                                                 foreach($stud_head as $stud_val)
                                                 {
                                                     echo "<th>".$stud_val."</th>";
@@ -127,7 +106,6 @@ if (isset($_POST['save_user_control'])) {
                                             for ($i=0; $i < count($disp_admin); $i++) { 
                                                 $name=$disp_admin[$i]['firstname']." ".$disp_admin[$i]['lastname'];
                                             echo "<tr>
-                                                    <td>".$disp_admin[$i]['id']."</td>
                                                     <td>".$disp_admin[$i]['lastname']."</td>
                                                     <td>".$disp_admin[$i]['firstname']."</td>
                                                     <td>".$disp_admin[$i]['middlename']."</td>
@@ -135,13 +113,9 @@ if (isset($_POST['save_user_control'])) {
                                                     <td>".$disp_admin[$i]['email']."</td>
                                                     <td>".$disp_admin[$i]['contact_number']."</td>
                                                     <td>
-                                                        <span class='m-1 edit_user_control'
-                                                            edit_user_control_id='".$disp_admin[$i]['id']."'
-                                                            fullname='".$name."'
-                                                            admin_name='".$name."'
-                                                            data-toggle='modal' data-target='#edit_user_control_modal'>
+                                                        <a class='m-1' href='admin-edit-user-control.php?id=".$disp_admin[$i]['id']."'>
                                                             <i class='fas fa-universal-access hvr-pop'></i>
-                                                        </span>
+                                                        </a>
                                                     </td>
                                                 </tr>";
                                             }
@@ -156,7 +130,7 @@ if (isset($_POST['save_user_control'])) {
 		</div>
 	</div>
 </div>
-<div class="text-center bg-primary p-4 mt-2 white-text fixed-bottom" style="background-color: rgba(0, 0, 0, 0.05);">
+<div class="text-center bg-primary p-4 mt-2 white-text" style="background-color: rgba(0, 0, 0, 0.05);">
     Copyright &copy; 2022
     <a class="text-reset fw-bold" href="https://www.gct.edu.ph/" target="_blank">GCT Assessor's Office</a>
 </div>

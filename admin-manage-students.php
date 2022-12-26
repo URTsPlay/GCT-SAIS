@@ -48,7 +48,7 @@ if (isset($_POST['save_student'])) {
                                     <thead>
                                         <tr>
                                             <?php
-                                                $stud_head=explode(",","No,School ID,Last Name,First Name,Middle Name,Birthdate,Address,Email,Contact Number,Course,Year,Is Scholar, Scholarship Type,Action");
+                                                $stud_head=explode(",","Image,School ID,Last Name,First Name,Middle Name,Birthdate,Address,Email,Contact Number,Course,Year,Is Scholar, Scholarship Type,Action");
                                                 foreach($stud_head as $stud_val)
                                                 {
                                                     echo "<th>".$stud_val."</th>";

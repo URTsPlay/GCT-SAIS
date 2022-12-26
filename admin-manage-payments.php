@@ -156,7 +156,7 @@ if (isset($_POST['save_exam_pay'])) {
                                                 <label for="or_number">OR Number</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="md-form">
                                                 <select class="mdb-select md-form" name="getStudents" id="getStudents" searchable="Search here..">
                                                     <option value="">Select Student</option>
@@ -169,20 +169,20 @@ if (isset($_POST['save_exam_pay'])) {
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="md-form">
                                                 <select class="mdb-select md-form" name="course" id="course" searchable="Search here..">
                                                     <option value="">Select Course</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="md-form">
                                                 <input class="form-control" type="number" name="year" id="year" required>
                                                 <label for="year">Year</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="md-form">
                                                 <select class="mdb-select md-form" name="particular" id="particular">
                                                     <option value="">Select Particular</option>
@@ -191,7 +191,7 @@ if (isset($_POST['save_exam_pay'])) {
                                                 </select>
                                             </div>  
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="md-form">
                                                 <select class="mdb-select md-form" name="school_year" id="school_year">
                                                     <option value="">Select School Year</option>
@@ -204,7 +204,7 @@ if (isset($_POST['save_exam_pay'])) {
                                                 </select>
                                             </div>  
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="md-form">
                                                 <select class="mdb-select" name="subjects[]" id="subjects" multiple searchable="Search...">
                                                     <option value="">Select Subjects</option>
@@ -218,27 +218,25 @@ if (isset($_POST['save_exam_pay'])) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="md-form">
-                                                <i class="fas fa-money-bill prefix"></i>
-                                                <input class="form-control" type="text" name="reg_gen_fee" id="reg_gen_fee" required>
-                                                <label for="reg_gen_fee">Reg/Gen. Fee</label>
-                                            </div>
+                                    <div class="col-md-12">
+                                        <div class="md-form">
+                                            <i class="fas fa-money-bill prefix"></i>
+                                            <input class="form-control" type="text" name="reg_gen_fee" id="reg_gen_fee" required>
+                                            <label for="reg_gen_fee">Reg/Gen. Fee</label>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="md-form">
-                                                <i class="fas fa-money-bill prefix"></i>
-                                                <input class="form-control" type="text" name="lab_fee" id="lab_fee" required>
-                                                <label for="lab_fee">Laboratory Fee</label>
-                                            </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="md-form">
+                                            <i class="fas fa-money-bill prefix"></i>
+                                            <input class="form-control" type="text" name="lab_fee" id="lab_fee" required>
+                                            <label for="lab_fee">Laboratory Fee</label>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="md-form">
-                                                <i class="fas fa-money-bill prefix"></i>
-                                                <input class="form-control" type="text" name="nstp_fee" id="nstp_fee" required>
-                                                <label for="nstp_fee">NSTP Fee</label>
-                                            </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="md-form">
+                                            <i class="fas fa-money-bill prefix"></i>
+                                            <input class="form-control" type="text" name="nstp_fee" id="nstp_fee" required>
+                                            <label for="nstp_fee">NSTP Fee</label>
                                         </div>
                                     </div>
                                     <div class="row">

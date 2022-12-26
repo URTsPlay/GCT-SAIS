@@ -48,7 +48,7 @@
     <div class="row">
     <div class="col-md-4">
             <div class="card">
-                <img class="card-img-top" src="./assets/img/home_assessment.jpg" height="250px" alt="">
+                <img class="card-img-top" src="./assets/img/home_ass.jpg" height="250px" alt="">
                 <div class="card-body">
                     <h5 class="card-title">ASSESSMENT & STUDENT FEES</h5>
                     <p class="card-text">The Assessment and Student Fees allows student to view their general fees, tuition and examination fees.</p>
