@@ -3,6 +3,20 @@
 <?php $page_title="GCT SAIS"; ?>
 <?php
 $get_profile=retrieve("SELECT * FROM login_credentials LEFT JOIN admin ON login_credentials.user_id=admin.id WHERE username=?",array($_GET['admin']));
+
+if (isset($_POST['save_profile'])) {
+    manage("UPDATE admin 
+        SET lastname=?, firstname=?, middlename=?,
+        email=?, contact_number=? WHERE id=?",
+    array($_POST['edit_lastname'],$_POST['edit_firstname'],$_POST['edit_middlename'],
+        $_POST['edit_email'],$_POST['edit_contact_number'],$_POST['edit_id']));
+    
+    echo "<script type='module'>
+            Swal.fire('Success','Profile updated successfully','success');
+        </script>";
+}
+
+
 if (isset($_POST['save_password'])) {
     $get_curr_pass=retrieve("SELECT * FROM login_credentials WHERE username=?",array($_GET['user']));
 
