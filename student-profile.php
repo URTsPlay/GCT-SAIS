@@ -8,9 +8,8 @@
     $get_courses=retrieve("SELECT * FROM courses WHERE course_code=?",array($get_profile[0]['course']));
 
     if (isset($_POST['save_profile'])) {
-        manage("UPDATE students SET email=?, contact_number=?, course=?, year=? WHERE id=?",
-        array($_POST['edit_email'],$_POST['edit_contact_number'],$_POST['edit_course'],
-            $_POST['edit_year'],$_POST['edit_id']));
+        manage("UPDATE students SET email=?, contact_number=?, year=? WHERE id=?",
+        array($_POST['edit_email'],$_POST['edit_contact_number'],$_POST['edit_year'],$_POST['edit_id']));
         
         echo "<script type='module'>
                 Swal.fire('Success','Profile updated successfully','success');
@@ -123,7 +122,14 @@
                                     <input class="form-control" type="text" name="edit_contact_number" id="edit_contact_number" value="<?php echo $get_profile[0]['contact_number']; ?>">    
 
                                     <label class="form-label" for="edit_course">Course</label>
-                                    <select class="form-control" name="edit_course" id="edit_course" value="<?php echo $get_profile[0]['course']; ?>">
+                                    <select class="form-control d-none" name="edit_course" id="edit_course">
+                                        <option value=""></option>
+                                        <?php
+                                            $select_course=retrieve("SELECT * FROM courses",array());
+                                            for ($i=0; $i < COUNT($select_course); $i++) { 
+                                                echo "<option value='".$get_courses[0]['course_code']." selected>".$select_course[$i]['course_name']."</option>";
+                                            }
+                                        ?>
                                     </select>
                                     
                                     <label class="form-label" for="edit_year">Year</label>
@@ -157,11 +163,11 @@
 <?php include('includes/footer.php'); ?>
 <script>
 $(document).ready(function(){
-    var url = "data/courses.json";
-    $.getJSON(url, function (data) {
-        $.each(data, function (index, value) {
-            $('#edit_course').append('<option value="' + value.course_code + '">' + value.course_name + '</option>');
-        });
-    });
+    // var url = "data/courses.json";
+    // $.getJSON(url, function (data) {
+    //     $.each(data, function (index, value) {
+    //         $('#edit_course').append('<option value="' + value.course_code + '">' + value.course_name + '</option>');
+    //     });
+    // });
 })
 </script>
