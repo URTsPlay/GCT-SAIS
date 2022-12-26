@@ -6,12 +6,15 @@
     <span>Show tuition and fees assessment on School Terms selected below.</span>
     <hr>
     <div class="row pa-7">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <h6 style="font-size:20px;" class="font-weight-bold h6">Name: <?php echo $student_lastname.", ".$student_firstname." ".$student_middlename; ?></h6>
             <h6 style="font-size:20px;" class="font-weight-bold h6 text-caption">Course/Year: <?php echo $course." - ".$year; ?></h6>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <h6 style="font-size:20px;" class="font-weight-bold h6 text-caption">SY: <?php echo date("Y")."-".date("Y",strtotime("+1 Years")); ?></h6>
+        </div>
+        <div class="col-md-3">
+            <h6 style="font-size:20px;" class="font-weight-bold h6 text-caption">1st Semester</h6>
         </div>
         <div class="col-md-12">
             <div class="card blue darken-4 white-text">
@@ -98,10 +101,10 @@
                             <table class="table table-striped table-bordered table-hover white-text">
                                 <thead>
                                     <tr>
-                                        <th>Payments</th>
-                                        <th>OR Number</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
+                                        <th class="font-weight-bold">Payments</th>
+                                        <th class="font-weight-bold">OR Number</th>
+                                        <th class="font-weight-bold">Amount</th>
+                                        <th class="font-weight-bold">Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -132,8 +135,8 @@
                             <table class="table table-striped table-bordered table-hover white-text">
                                 <thead>
                                     <tr>
-                                        <th>Exam</th>
-                                        <th>Amount</th>
+                                        <th class="font-weight-bold">Examination</th>
+                                        <th class="font-weight-bold">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>

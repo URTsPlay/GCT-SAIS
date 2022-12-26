@@ -313,7 +313,7 @@ if (isset($_POST['save_exam_pay'])) {
                                                             <td>".$disp_assessment[$i]['subtotal']."</td>
                                                             <td>".$disp_assessment[$i]['total']."</td>
                                                             <td>
-                                                                <span class='m-1 view_subjects' title='View Subjects'
+                                                                <span class='m-1 view_subjects d-none' title='View Subjects'
                                                                     fullname='".$disp_assessment[$i]['fullname']."'
                                                                     data-toggle='modal' data-target='#view_subjects_modal'>
                                                                     <i class='fas fa-eye hvr-pop'></i>
@@ -358,7 +358,7 @@ if (isset($_POST['save_exam_pay'])) {
                                             <thead>
                                                 <tr>
                                                     <?php
-                                                        $stud_head=explode(",","No,OR Number,Name,Tuition,Balance,Prelim,Midterm/Pre-Final/Final");
+                                                        $stud_head=explode(",","OR Number,Name,Tuition,Balance,Prelim,Midterm/Pre-Final/Final");
                                                         foreach($stud_head as $stud_val)
                                                         {
                                                             echo "<th>".$stud_val."</th>";
@@ -385,7 +385,6 @@ if (isset($_POST['save_exam_pay'])) {
                                                         $get_payments=retrieve("SELECT * FROM payments WHERE assessment_id=?",array($disp_examination[$i]['assessment_id']));
                                                         $get_subjects = retrieve("SELECT * FROM assessment_subject WHERE assessment_id=?",array($disp_examination[$i]['assessment_id']));
                                                     echo "<tr>  
-                                                            <td>".$disp_examination[$i]['assessment_id']."</td>
                                                             <td>".$disp_examination[$i]['or_number']."</td>
                                                             <td>".$disp_examination[$i]['fullname']."</td>
                                                             <td>".$disp_examination[$i]['tuition_fee']."</td>
@@ -418,7 +417,7 @@ if (isset($_POST['save_exam_pay'])) {
                                     <thead>
                                         <tr>
                                             <?php
-                                                $stud_head=explode(",","No,OR Number,Name,Tuition,Balance,Prelim,Midterm/Pre-Final/Final");
+                                                $stud_head=explode(",","OR Number,Name,Tuition,Balance,Prelim,Midterm/Pre-Final/Final");
                                                 foreach($stud_head as $stud_val)
                                                 {
                                                     echo "<th>".$stud_val."</th>";
@@ -445,7 +444,6 @@ if (isset($_POST['save_exam_pay'])) {
                                                 $get_payments=retrieve("SELECT * FROM payments WHERE assessment_id=?",array($disp_payments[$i]['assessment_id']));
                                                 $get_subjects = retrieve("SELECT * FROM assessment_subject WHERE assessment_id=?",array($disp_payments[$i]['assessment_id']));
                                                 echo "<tr>  
-                                                        <td>".$disp_payments[$i]['assessment_id']."</td>
                                                         <td>".$disp_payments[$i]['or_number']."</td>
                                                         <td>".$disp_payments[$i]['fullname']."</td>
                                                         <td>".$disp_payments[$i]['tuition_fee']."</td>

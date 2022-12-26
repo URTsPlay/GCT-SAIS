@@ -2,16 +2,16 @@
 <?php include('includes/navigation.php'); ?>
 <?php $page_title="GCT SAIS - Student Ledger"; ?>
 <div class="container mt-3">
-    <h5 class="h5 text-uppercase pb-5">Account Ledger</h5>
+    <h4 class="h4 text-uppercase pb-5; text-center">Account Ledger</h4>
     <div class="row pa-7 white-text blue darken-4">
         <div class="col-md-6">
-            <h6 class="h6 text-uppercase font-weight-bold" style="font-size: 24px;">Ledger of School Accounts</h6>
-            <h6 style="font-size:20px;" class="font-weight-bold h6"><?php echo $student_fullname; ?></h6>
+            <h6></h6>
+            <h6 style="font-size:30px;" class="font-weight-bold h6"><?php echo $student_fullname; ?></h6>
             <span>Student ID No. <?php echo $student_schoolid; ?></span>
         </div>
         <div class="col-md-6">
-            <h6 class="h6 text-uppercase font-weight-bold" style="font-size: 24px;">ACCOUNT BALANCE</h6>
-            <h6 style="font-size:20px;" class="font-weight-bold h6 text-caption"><?php echo $course." - ".$year; ?></h6>
+            <h6></h6>
+            <h6 style="font-size:29px;" class="font-weight-bold h6 text-caption"><?php echo $course." - ".$year; ?></h6>
             <span>COURSE AND YEAR</span>
         </div>
     </div>
@@ -41,7 +41,7 @@
     </table>
     <div class="row">
         <div class="col-md-12">
-            <h5 class="font-weight-bold pb-5 mt-5">ACCOUNT TRANSACTION DETAILS</h5>
+            <h4 class="font-weight-bold pb-8 mt-5">ACCOUNT TRANSACTION DETAILS</h4>
             <table class="table table-striped table-hover table-sm w-100">
                 <thead>
                     <tr>

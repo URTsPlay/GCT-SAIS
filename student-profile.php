@@ -8,11 +8,8 @@
     $get_courses=retrieve("SELECT * FROM courses WHERE course_code=?",array($get_profile[0]['course']));
 
     if (isset($_POST['save_profile'])) {
-        manage("UPDATE students 
-            SET lastname=?, firstname=?, middlename=?,
-            email=?, contact_number=?, course=?, year=? WHERE id=?",
-        array($_POST['edit_lastname'],$_POST['edit_firstname'],$_POST['edit_middlename'],
-            $_POST['edit_email'],$_POST['edit_contact_number'],$_POST['edit_course'],
+        manage("UPDATE students SET email=?, contact_number=?, course=?, year=? WHERE id=?",
+        array($_POST['edit_email'],$_POST['edit_contact_number'],$_POST['edit_course'],
             $_POST['edit_year'],$_POST['edit_id']));
         
         echo "<script type='module'>
@@ -117,6 +114,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <form method="POST">
+                                    <input type="text" name="edit_id" id="edit_id" value="<?php echo $get_profile[0]['id']; ?>" hidden>
+                                    
                                     <label class="form-label" for="edit_year">Email</label>
                                     <input class="form-control" type="email" name="edit_email" id="edit_email" value="<?php echo $get_profile[0]['email'] ?>">
                                     
@@ -129,6 +128,8 @@
                                     
                                     <label class="form-label" for="edit_year">Year</label>
                                     <input class="form-control" type="number" name="edit_year" id="edit_year" value="<?php echo $get_profile[0]['year'] ?>">
+
+                                    <button type="submit" class="btn btn-success" name="save_profile" id="save_profile">Save</button>
                                 </form>
                             </div>
                         </div>

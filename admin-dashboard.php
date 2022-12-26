@@ -100,7 +100,7 @@
                 </div>
             </div>
         </div>
-        <div class='col-md-4 mt-2'>
+        <div class='col-md-4 mt-2 d-none'>
             <div class='card text-center'>
                 <div class='d-flex flex-row'>
                     <div class='p-2'>
@@ -202,6 +202,6 @@
 <?php include('includes/footer.php'); ?>
 <script>
     function showErrorMessage(){
-        Swal.fire('Error','Access Denied','error');
+        Swal.fire('Access Denied',' Need to ask permission to the admin to access this menu.','error');
     }
 </script>

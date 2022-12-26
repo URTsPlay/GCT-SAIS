@@ -20,13 +20,16 @@
                             <h6 style="font-size:20px;" class="font-weight-bold h6"><?php echo $student_firstname." ".$get_mi.". ".$student_lastname; ?></h6>
                             <span>Student ID No. <?php echo $student_schoolid; ?></span>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <h6 style="font-size:20px;" class="font-weight-bold h6"><?php echo $course." - ".$year; ?></h6>
                             <span>COURSE AND YEAR</span>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <h6 style="font-size:20px;" class="font-weight-bold h6">SY <?php echo date("Y")."-".date("Y",strtotime("+ 1 year")); ?></h6>
                             <span>School Year</span>
+                        </div>
+                        <div class="col-md-2">
+                            <h6 style="font-size:20px;" class="font-weight-bold h6">1st Semester</h6>
                         </div>
                     </div>
                 </div>
@@ -53,7 +56,7 @@
                     <h5 class="card-title">ASSESSMENT & STUDENT FEES</h5>
                     <p class="card-text">The Assessment and Student Fees allows student to view their general fees, tuition and examination fees.</p>
                     <div class="card-actions">
-                        <a href="student-assessment.php" class="btn btn-primary d-block">View Account Ledger</a>
+                        <a href="student-assessment.php" class="btn btn-primary d-block">View Assessment</a>
                     </div>
                 </div>
             </div>
@@ -63,7 +66,7 @@
                 <img class="card-img-top" src="./assets/img/student_ledger.jpeg" height="250px" alt="">
                 <div class="card-body">
                     <h5 class="card-title">STUDENT ACCOUNT LEDGER</h5>
-                    <p class="card-text">The Student Account Ledger allows student to view student account ledger and account transaction details.</p>
+                    <p class="card-text">The Student Account Ledger allows student to view student account information and account transaction details.</p>
                     <div class="card-actions">
                         <a href="student-account-ledger.php" class="btn btn-primary d-block">View Account Ledger</a>
                     </div>

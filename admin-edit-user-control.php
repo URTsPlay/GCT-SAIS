@@ -70,7 +70,7 @@ if (isset($_POST['save_user_control'])) {
                                                 ?>
                                             </div>
                                         </div>
-                                    <button type="submit" class="btn btn-primary btn-sm" name="save_user_control">Add</button>
+                                    <button type="submit" class="btn btn-primary btn-sm" name="save_user_control">Save</button>
                                 </form>
                             </div>
                         </div>
